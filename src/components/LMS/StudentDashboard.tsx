@@ -30,7 +30,7 @@ const enrolledCourses: Course[] = [
     totalLessons: 12,
     completedLessons: 9,
     nextLesson: 'Standing Balance Poses',
-    image: '/IMG_0633.jpg',
+    image: '/images/IMG_0633(1).jpg',
     instructor: 'Bryan Weems',
     duration: '4 weeks'
   },
