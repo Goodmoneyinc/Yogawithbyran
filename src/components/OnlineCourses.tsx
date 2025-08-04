@@ -50,7 +50,7 @@ const courses = [
     students: "1,156",
     rating: 5.0,
     price: "$20",
-    image: "https://images.pexels.com/photos/396133/pexels-photo-396133.jpeg?auto=compress&cs=tinysrgb&w=600",
+    image: "/images/IMG_0633(4).jpg",
     description: "Bridge the gap to advanced practice with challenging poses and techniques.",
     lessons: 4,
     videoDuration: "15-30 min"
