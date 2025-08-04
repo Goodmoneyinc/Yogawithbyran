@@ -4,8 +4,8 @@ import { Play, Calendar, Users, Clock, ExternalLink, Youtube } from 'lucide-reac
 const liveVideos = [
   {
     id: 1,
-    title: "Morning Flow - Live Yoga Session",
-    description: "Start your day with an energizing 45-minute flow sequence perfect for all levels.",
+    title: "All Levels Open Flow",
+    description: "Join our welcoming live session where practitioners of every level can flow together. Modifications and variations provided for all abilities.",
     youtubeId: "dQw4w9WgXcQ", // Replace with actual YouTube video IDs
     thumbnail: "https://images.pexels.com/photos/3822702/pexels-photo-3822702.jpeg?auto=compress&cs=tinysrgb&w=600",
     duration: "45 min",
