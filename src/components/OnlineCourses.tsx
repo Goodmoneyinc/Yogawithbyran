@@ -37,7 +37,7 @@ const courses = [
     students: "956",
     rating: 4.9,
     price: "$20",
-    image: "https://images.pexels.com/photos/3822906/pexels-photo-3822906.jpeg?auto=compress&cs=tinysrgb&w=600",
+    image: "/images/IMG_0633(2).jpg",
     description: "Master challenging poses, inversions, and advanced breathing.",
     lessons: 4,
     videoDuration: "15-30 min"
