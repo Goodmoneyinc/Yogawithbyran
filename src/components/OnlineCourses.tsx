@@ -43,19 +43,6 @@ const courses = [
     videoDuration: "15-30 min"
   },
   {
-    id: 4,
-    title: "Pre-Advanced Techniques",
-    level: "Intermediate",
-    duration: "7 weeks",
-    students: "1,156",
-    rating: 5.0,
-    price: "$20",
-    image: "/images/IMG_0633(4).jpg",
-    description: "Bridge the gap to advanced practice with challenging poses and techniques.",
-    lessons: 4,
-    videoDuration: "15-30 min"
-  },
-  {
     id: 3,
     title: "Advanced Yoga Techniques",
     level: "Advanced",
@@ -65,6 +52,19 @@ const courses = [
     price: "$20",
     image: "/images/IMG_0633(2).jpg",
     description: "Master challenging poses, inversions, and advanced breathing.",
+    lessons: 4,
+    videoDuration: "15-30 min"
+  },
+  {
+    id: 4,
+    title: "Pre-Advanced Techniques",
+    level: "Intermediate",
+    duration: "7 weeks",
+    students: "1,156",
+    rating: 5.0,
+    price: "$20",
+    image: "/images/IMG_0633(4).jpg",
+    description: "Bridge the gap to advanced practice with challenging poses and techniques.",
     lessons: 4,
     videoDuration: "15-30 min"
   },
