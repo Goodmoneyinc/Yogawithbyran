@@ -36,7 +36,7 @@ const enrolledCourses: Course[] = [
   },
   {
     id: '2',
-    title: 'Intermediate Flow Mastery',
+    title: 'Pre-Intermediate Flow Mastery',
     progress: 30,
     totalLessons: 16,
     completedLessons: 5,

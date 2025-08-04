@@ -18,7 +18,7 @@ const courses = [
   },
   {
     id: 2,
-    title: "Intermediate Flow Mastery",
+    title: "Pre-Intermediate Flow Mastery",
     level: "Intermediate",
     duration: "6 weeks",
     students: "1,890",
