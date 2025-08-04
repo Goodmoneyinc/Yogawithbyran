@@ -10,7 +10,7 @@ const courses = [
     students: "2,340",
     rating: 4.9,
     price: "$20",
-    image: "20-2-27-14-27-39m.jpg",
+    image: "/IMG_0633.jpg",
     
     description: "Perfect introduction to yoga with gentle poses and breathing techniques.",
     lessons: 4,
