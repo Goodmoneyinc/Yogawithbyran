@@ -24,7 +24,7 @@ const courses = [
     students: "1,890",
     rating: 4.8,
     price: "$20",
-    image: "https://images.pexels.com/photos/3822702/pexels-photo-3822702.jpeg?auto=compress&cs=tinysrgb&w=600",
+    image: "/images/IMG_0633(3).jpg",
     description: "Advance your practice with flowing sequences and deeper poses.",
     lessons: 4,
     videoDuration: "15-30 min"

@@ -41,7 +41,7 @@ const enrolledCourses: Course[] = [
     totalLessons: 16,
     completedLessons: 5,
     nextLesson: 'Sun Salutation Variations',
-    image: 'https://images.pexels.com/photos/3822906/pexels-photo-3822906.jpeg?auto=compress&cs=tinysrgb&w=400',
+    image: '/images/IMG_0633(3).jpg',
     instructor: 'Bryan Weems',
     duration: '6 weeks'
   },
