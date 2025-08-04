@@ -31,7 +31,7 @@ export default function Header() {
             <a href="#courses" className="text-stone-700 hover:text-sage-600 transition-colors">Online Courses</a>
             <a href="#live-videos" className="text-stone-700 hover:text-sage-600 transition-colors">Live Videos</a>
             <a href="#plans" className="text-stone-700 hover:text-sage-600 transition-colors">Subscription</a>
-            <a href="#lms" className="text-stone-700 hover:text-sage-600 transition-colors">Student Portal</a>
+            <a href="#lms" className="text-stone-700 hover:text-sage-600 transition-colors">Yogi Progress</a>
             <a href="#shop" className="text-gray-400 cursor-not-allowed">Shop (Coming Soon)</a>
           </nav>
 
@@ -65,7 +65,7 @@ export default function Header() {
               <a href="#courses" className="block px-3 py-2 text-stone-700 hover:text-sage-600 transition-colors">Online Courses</a>
               <a href="#live-videos" className="block px-3 py-2 text-stone-700 hover:text-sage-600 transition-colors">Live Videos</a>
               <a href="#plans" className="block px-3 py-2 text-stone-700 hover:text-sage-600 transition-colors">Subscription</a>
-              <a href="#lms" className="block px-3 py-2 text-stone-700 hover:text-sage-600 transition-colors">Student Portal</a>
+              <a href="#lms" className="block px-3 py-2 text-stone-700 hover:text-sage-600 transition-colors">Yogi Progress</a>
               <a href="#shop" className="block px-3 py-2 text-gray-400 cursor-not-allowed">Shop (Coming Soon)</a>
             </div>
           </div>
