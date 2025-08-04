@@ -43,19 +43,6 @@ const courses = [
     videoDuration: "15-30 min"
   },
   {
-    id: 3,
-    title: "Advanced Yoga Techniques",
-    level: "Advanced",
-    duration: "8 weeks",
-    students: "956",
-    rating: 4.9,
-    price: "$20",
-    image: "/images/IMG_0633(2).jpg",
-    description: "Master challenging poses, inversions, and advanced breathing.",
-    lessons: 4,
-    videoDuration: "15-30 min"
-  },
-  {
     id: 4,
     title: "Pre-Advanced Techniques",
     level: "Intermediate",
