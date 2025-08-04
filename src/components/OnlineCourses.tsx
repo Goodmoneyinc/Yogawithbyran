@@ -55,19 +55,6 @@ const courses = [
     lessons: 4,
     videoDuration: "15-30 min"
   },
-  {
-    id: 6,
-    title: "Power Yoga Intensive",
-    level: "Intermediate",
-    duration: "6 weeks",
-    students: "1,045",
-    rating: 4.7,
-    price: "$20",
-    image: "https://images.pexels.com/photos/3822507/pexels-photo-3822507.jpeg?auto=compress&cs=tinysrgb&w=600",
-    description: "Build strength and endurance with dynamic, challenging sequences.",
-    lessons: 4,
-    videoDuration: "15-30 min"
-  }
 ];
 
 const levelColors = {
