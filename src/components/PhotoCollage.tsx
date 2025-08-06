@@ -3,7 +3,7 @@ import React from 'react';
 const photos = [
   {
     id: 1,
-    src: "https://images.pexels.com/photos/3822702/pexels-photo-3822702.jpeg?auto=compress&cs=tinysrgb&w=400",
+    src: "/images/IMG_6674.jpg",
     alt: "Yoga pose in nature"
   },
   {
