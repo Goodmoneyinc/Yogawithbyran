@@ -8,7 +8,7 @@ const photos = [
   },
   {
     id: 2,
-    src: "https://images.pexels.com/photos/3822501/pexels-photo-3822501.jpeg?auto=compress&cs=tinysrgb&w=400",
+    src: "/images/IMG_6672.jpg",
     alt: "Meditation practice"
   },
   {
