@@ -20,31 +20,6 @@ const photos = [
     id: 4,
     src: "/images/IMG_6668.jpg",
     alt: "Prenatal yoga"
-  },
-  {
-    id: 5,
-    src: "https://images.pexels.com/photos/3822507/pexels-photo-3822507.jpeg?auto=compress&cs=tinysrgb&w=400",
-    alt: "Power yoga session"
-  },
-  {
-    id: 6,
-    src: "https://images.pexels.com/photos/3823207/pexels-photo-3823207.jpeg?auto=compress&cs=tinysrgb&w=400",
-    alt: "Group yoga class"
-  },
-  {
-    id: 7,
-    src: "https://images.pexels.com/photos/3823488/pexels-photo-3823488.jpeg?auto=compress&cs=tinysrgb&w=400",
-    alt: "Yoga stretching"
-  },
-  {
-    id: 8,
-    src: "https://images.pexels.com/photos/4056723/pexels-photo-4056723.jpeg?auto=compress&cs=tinysrgb&w=400",
-    alt: "Outdoor yoga practice"
-  },
-  {
-    id: 9,
-    src: "https://images.pexels.com/photos/4662438/pexels-photo-4662438.jpeg?auto=compress&cs=tinysrgb&w=400",
-    alt: "Yoga equipment"
   }
 ];
 
@@ -69,8 +44,6 @@ export default function PhotoCollage() {
               className={`
                 relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer
                 ${index === 0 ? 'md:col-span-2 md:row-span-2' : ''}
-                ${index === 4 ? 'lg:col-span-2' : ''}
-                ${index === 7 ? 'md:row-span-2' : ''}
               `}
             >
               <img
@@ -79,8 +52,6 @@ export default function PhotoCollage() {
                 className={`
                   w-full h-full object-cover group-hover:scale-110 transition-transform duration-500
                   ${index === 0 ? 'h-64 md:h-full' : 'h-48 md:h-56'}
-                  ${index === 4 ? 'h-48' : ''}
-                  ${index === 7 ? 'h-48 md:h-full' : ''}
                 `}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
