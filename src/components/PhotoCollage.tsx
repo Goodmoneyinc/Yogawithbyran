@@ -13,7 +13,7 @@ const photos = [
   },
   {
     id: 3,
-    src: "https://images.pexels.com/photos/3822906/pexels-photo-3822906.jpeg?auto=compress&cs=tinysrgb&w=400",
+    src: "/images/IMG_6673.jpg",
     alt: "Advanced yoga pose"
   },
   {
