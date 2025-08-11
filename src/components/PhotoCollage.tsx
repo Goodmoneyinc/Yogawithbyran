@@ -77,7 +77,7 @@ export default function PhotoCollage() {
                 src={photo.src}
                 alt={photo.alt}
                 className={`
-                  w-full object-cover group-hover:scale-110 transition-transform duration-500
+                  w-full h-full object-cover group-hover:scale-110 transition-transform duration-500
                   ${index === 0 ? 'h-64 md:h-full' : 'h-48 md:h-56'}
                   ${index === 4 ? 'h-48' : ''}
                   ${index === 7 ? 'h-48 md:h-full' : ''}
