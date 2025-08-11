@@ -18,7 +18,7 @@ const photos = [
   },
   {
     id: 4,
-    src: "https://images.pexels.com/photos/396133/pexels-photo-396133.jpeg?auto=compress&cs=tinysrgb&w=400",
+    src: "/images/IMG_6668.jpg",
     alt: "Prenatal yoga"
   },
   {
