@@ -36,6 +36,11 @@ export default function CourseOutline() {
       description: 'Advance your practice with flowing sequences and deeper poses'
     },
     {
+      id: 'PL1Z9718vXb3gExDD3LTeCbtZ-NPp4EPFJ',
+      name: 'Pre-Advanced Techniques',
+      description: 'Bridge the gap to advanced practice with challenging poses and techniques'
+    },
+    {
       id: 'PL1Z9718vXb3gFWrc2MH9-H97QC677qWyO',
       name: 'Advanced Yoga Techniques',
       description: 'Master challenging poses, inversions, and advanced breathing techniques'
