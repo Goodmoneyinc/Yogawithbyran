@@ -22,7 +22,7 @@ export default function CourseOutline() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedVideo, setSelectedVideo] = useState<YouTubeVideo | null>(null);
-  const [playlistId, setPlaylistId] = useState('PLrAXtmRdnEQy8VYJlMFJOZHzV9uE8gE8r'); // Default playlist ID
+  const [playlistId, setPlaylistId] = useState('PL1Z9718vXb3jwQ0dF90z7C8mxPvf34COI'); // Yoga for Absolute Beginners playlist
 
   useEffect(() => {
     fetchPlaylistVideos();
