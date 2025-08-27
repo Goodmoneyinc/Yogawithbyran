@@ -59,14 +59,14 @@ export default function SubscriptionPlans() {
               </ul>
               
               <button className="w-full py-4 px-6 rounded-lg font-body font-medium text-lg bg-sage-600 text-white hover:bg-sage-700 transition-colors shadow-lg">
-                Start Your 2-Week Free Trial
+                Subscribe Now
               </button>
             </div>
           </div>
         </div>
 
         <div className="mt-12 text-center">
-          <p className="font-body text-stone-600 mb-4">2-week free trial • Cancel anytime • No commitment</p>
+          <p className="font-body text-stone-600 mb-4">Cancel anytime • No commitment</p>
           <p className="text-sm font-body text-stone-500">
             Need a custom plan for your business or organization? 
             <a href="#contact" className="text-sage-600 hover:underline ml-1">Contact us</a>
