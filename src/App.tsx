@@ -7,14 +7,20 @@ import SubscriptionPlans from './components/SubscriptionPlans';
 import PhotoCollage from './components/PhotoCollage';
 import Footer from './components/Footer';
 import LMSNavigation from './components/LMS/LMSNavigation';
+import CourseOutline from './components/CourseOutline';
 
 function App() {
   // For demo purposes, you can toggle between the main site and LMS
   // In a real implementation, this would be handled by routing
   const showLMS = window.location.hash === '#lms';
+  const showCourseOutline = window.location.hash === '#course-outline';
 
   if (showLMS) {
     return <LMSNavigation />;
+  }
+
+  if (showCourseOutline) {
+    return <CourseOutline />;
   }
 
   return (

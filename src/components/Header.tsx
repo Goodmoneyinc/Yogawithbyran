@@ -29,6 +29,7 @@ export default function Header() {
           <nav className="hidden md:flex space-x-8 font-body">
             <a href="#home" className="text-stone-700 hover:text-sage-600 transition-colors">Home</a>
             <a href="#courses" className="text-stone-700 hover:text-sage-600 transition-colors">Online Courses</a>
+            <a href="#course-outline" className="text-stone-700 hover:text-sage-600 transition-colors">Course Outline</a>
             <a href="#live-videos" className="text-stone-700 hover:text-sage-600 transition-colors">Live Videos</a>
             <a href="#plans" className="text-stone-700 hover:text-sage-600 transition-colors">Subscription</a>
             <a href="#lms" className="text-stone-700 hover:text-sage-600 transition-colors">Yogi Progress</a>
@@ -63,6 +64,7 @@ export default function Header() {
             <div className="px-2 pt-2 pb-3 space-y-1">
               <a href="#home" className="block px-3 py-2 text-stone-700 hover:text-sage-600 transition-colors">Home</a>
               <a href="#courses" className="block px-3 py-2 text-stone-700 hover:text-sage-600 transition-colors">Online Courses</a>
+              <a href="#course-outline" className="block px-3 py-2 text-stone-700 hover:text-sage-600 transition-colors">Course Outline</a>
               <a href="#live-videos" className="block px-3 py-2 text-stone-700 hover:text-sage-600 transition-colors">Live Videos</a>
               <a href="#plans" className="block px-3 py-2 text-stone-700 hover:text-sage-600 transition-colors">Subscription</a>
               <a href="#lms" className="block px-3 py-2 text-stone-700 hover:text-sage-600 transition-colors">Yogi Progress</a>
