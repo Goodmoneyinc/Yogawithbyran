@@ -34,6 +34,11 @@ export default function CourseOutline() {
       id: 'PL1Z9718vXb3gjKyoek6imDxfuNLbM7Iw9',
       name: 'Pre-Intermediate Flow Mastery',
       description: 'Advance your practice with flowing sequences and deeper poses'
+    },
+    {
+      id: 'PL1Z9718vXb3gFWrc2MH9-H97QC677qWyO',
+      name: 'Advanced Yoga Techniques',
+      description: 'Master challenging poses, inversions, and advanced breathing techniques'
     }
   ];
 
