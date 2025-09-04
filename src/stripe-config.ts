@@ -11,7 +11,7 @@ export const products: Product[] = [
   {
     id: 'prod_SzkGjzAt3Em7Zh',
     priceId: 'price_1S3kljGHz3Ny4kcEU2xoQ9lu',
-    name: 'YOGII basic',
+    name: 'YOGI basic',
     description: 'Essential yoga practice with foundational poses and breathing techniques. Perfect for beginners starting their yoga journey.',
     mode: 'subscription',
     price: '$20.00'
