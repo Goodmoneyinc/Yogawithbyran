@@ -1,98 +1,111 @@
 import React from 'react';
-import { Check, Star, Crown, Calendar } from 'lucide-react';
+import { Check, Star, Crown, Calendar, Loader2 } from 'lucide-react';
+import { products } from '../stripe-config';
+import { useAuth } from '../hooks/useAuth';
+import { createCheckoutSession } from '../lib/stripe';
 
-const plans = [
-  {
-    id: 'monthly',
-    name: "Monthly Access",
-    price: "$20",
-    period: "per month",
-    description: "Complete yoga experience with everything you need",
-    popular: false,
-    savings: null,
-    features: [
-      "Access to ALL online courses",
-      "New content weekly",
-      "Premium community access",
-      "One-on-one consultation",
-      "Priority email support",
-      "Downloadable resources",
-      "Progress tracking",
-      "Early access to workshops",
-      "Exclusive merchandise discounts"
-    ]
-  },
-  {
-    id: '6month',
-    name: "6-Month Package",
-    price: "$99",
-    period: "for 6 months",
-    description: "Save $21 with our 6-month commitment plan",
-    popular: true,
-    savings: "Save $21",
-    features: [
-      "Access to ALL online courses",
-      "New content weekly",
-      "Premium community access",
-      "One-on-one consultation",
-      "Priority email support",
-      "Downloadable resources",
-      "Progress tracking",
-      "Early access to workshops",
-      "Exclusive merchandise discounts",
-      "Bonus: Monthly live Q&A sessions",
-      "Bonus: Personalized practice plan"
-    ]
-  },
-  {
-    id: 'yearly',
-    name: "Annual Membership",
-    price: "$199",
-    period: "per year",
-    description: "Best value - save $41 with our annual plan",
-    popular: false,
-    savings: "Save $41",
-    features: [
-      "Access to ALL online courses",
-      "New content weekly",
-      "Premium community access",
-      "One-on-one consultation",
-      "Priority email support",
-      "Downloadable resources",
-      "Progress tracking",
-      "Early access to workshops",
-      "Exclusive merchandise discounts",
-      "Bonus: Monthly live Q&A sessions",
-      "Bonus: Personalized practice plan",
-      "Bonus: Annual retreat discount (20% off)",
-      "Bonus: Exclusive annual member gifts"
-    ]
-  }
-];
+const planFeatures = {
+  basic: [
+    "Access to beginner courses",
+    "Basic breathing techniques",
+    "Community forum access",
+    "Email support",
+    "Progress tracking",
+    "Mobile app access"
+  ],
+  pre: [
+    "Access to ALL courses",
+    "Intermediate & advanced content",
+    "Premium community access",
+    "Priority email support",
+    "Downloadable resources",
+    "Progress tracking",
+    "Live Q&A sessions",
+    "Personalized practice plans"
+  ],
+  adv: [
+    "Access to ALL courses",
+    "Advanced techniques & inversions",
+    "Premium community access",
+    "One-on-one consultations",
+    "Priority support",
+    "Downloadable resources",
+    "Progress tracking",
+    "Live Q&A sessions",
+    "Personalized practice plans",
+    "Workshop early access",
+    "Exclusive merchandise discounts",
+    "Annual retreat discounts"
+  ]
+};
 
 export default function SubscriptionPlans() {
+  const { user } = useAuth();
+  const [loadingPlan, setLoadingPlan] = React.useState<string | null>(null);
+
+  const handleSubscribe = async (priceId: string, planName: string) => {
+    if (!user) {
+      // Redirect to login
+      window.location.href = '/login';
+      return;
+    }
+
+    setLoadingPlan(priceId);
+    
+    try {
+      const successUrl = `${window.location.origin}/success?plan=${encodeURIComponent(planName)}`;
+      const cancelUrl = window.location.href;
+      
+      await createCheckoutSession({
+        priceId,
+        successUrl,
+        cancelUrl,
+        mode: 'subscription'
+      });
+    } catch (error) {
+      console.error('Error creating checkout session:', error);
+      alert('Failed to start checkout. Please try again.');
+    } finally {
+      setLoadingPlan(null);
+    }
+  };
+
+  const getFeatures = (productName: string) => {
+    if (productName.includes('basic')) return planFeatures.basic;
+    if (productName.includes('PRE')) return planFeatures.pre;
+    if (productName.includes('ADV')) return planFeatures.adv;
+    return planFeatures.basic;
+  };
+
+  const isPopular = (productName: string) => productName.includes('PRE');
+
   return (
     <section id="plans" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-heading font-medium text-stone-800 mb-4">Choose Your Journey</h2>
           <p className="text-xl font-body font-light text-stone-600 max-w-3xl mx-auto">
-            Select the perfect plan for your yoga practice. All plans include lifetime access to courses 
+            Select the perfect subscription plan for your yoga practice. All plans include access to courses 
             and exclusive member benefits.
           </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {plans.map((plan) => (
+          {products.map((product) => {
+            const popular = isPopular(product.name);
+            const features = getFeatures(product.name);
+            const isLoading = loadingPlan === product.priceId;
+            
+            return (
             <div
-              key={plan.id}
+              key={product.id}
               className={`relative rounded-2xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl ${
-                plan.popular
+                popular
                   ? 'bg-gradient-to-br from-sage-50 to-stone-50 border-2 border-sage-500 transform scale-105'
                   : 'bg-white border border-gray-200 hover:border-sage-300'
               }`}
             >
-              {plan.popular && (
+              {popular && (
                 <div className="absolute top-0 left-0 right-0 bg-sage-600 text-white text-center py-3 text-sm font-medium">
                   <div className="flex items-center justify-center space-x-1">
                     <Crown className="h-4 w-4" />
@@ -101,41 +114,25 @@ export default function SubscriptionPlans() {
                 </div>
               )}
               
-              {plan.savings && !plan.popular && (
-                <div className="absolute top-0 left-0 right-0 bg-amber-500 text-white text-center py-3 text-sm font-medium">
-                  <div className="flex items-center justify-center space-x-1">
-                    <Star className="h-4 w-4" />
-                    <span className="font-body">{plan.savings}</span>
-                  </div>
-                </div>
-              )}
-              
-              <div className={`p-8 ${plan.popular || plan.savings ? 'pt-16' : ''}`}>
+              <div className={`p-8 ${popular ? 'pt-16' : ''}`}>
                 <h3 className="text-2xl font-heading font-medium text-stone-800 mb-2 text-center">
-                  {plan.name}
+                  {product.name}
                 </h3>
                 <p className="font-body text-stone-600 mb-6 text-center text-sm">
-                  {plan.description}
+                  {product.description}
                 </p>
                 
                 <div className="mb-8 text-center">
                   <span className="text-4xl font-heading font-semibold text-stone-800">
-                    {plan.price}
+                    {product.price}
                   </span>
                   <span className="font-body text-stone-600 ml-2 text-lg">
-                    {plan.period}
+                    per month
                   </span>
-                  {plan.savings && (
-                    <div className="mt-2">
-                      <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                        {plan.savings}
-                      </span>
-                    </div>
-                  )}
                 </div>
                 
                 <ul className="space-y-3 mb-8">
-                  {plan.features.map((feature, featureIndex) => (
+                  {features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start">
                       <Check className="h-5 w-5 text-sage-600 mr-3 mt-0.5 flex-shrink-0" />
                       <span className={`font-body text-stone-700 text-sm ${
@@ -147,18 +144,24 @@ export default function SubscriptionPlans() {
                   ))}
                 </ul>
                 
-                <button className={`w-full py-4 px-6 rounded-lg font-body font-medium text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 ${
-                  plan.popular
+                <button 
+                  onClick={() => handleSubscribe(product.priceId, product.name)}
+                  disabled={isLoading}
+                  className={`w-full py-4 px-6 rounded-lg font-body font-medium text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none ${
+                  popular
                     ? 'bg-sage-600 text-white hover:bg-sage-700'
                     : 'bg-stone-600 text-white hover:bg-stone-700'
                 }`}>
-                  {plan.id === 'monthly' ? 'Start Monthly' : 
-                   plan.id === '6month' ? 'Choose 6 Months' : 
-                   'Choose Annual'}
+                  {isLoading ? (
+                    <div className="flex items-center justify-center space-x-2">
+                      <Loader2 className="h-5 w-5 animate-spin" />
+                      <span>Processing...</span>
+                    </div>
+                  ) : `Subscribe to ${product.name}`}
                 </button>
               </div>
             </div>
-          ))}
+          )})}
         </div>
 
         <div className="mt-16 text-center">
