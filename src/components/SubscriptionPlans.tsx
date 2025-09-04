@@ -130,6 +130,10 @@ export default function SubscriptionPlans() {
                     <span className="font-body text-stone-600 ml-2 text-lg">
                       per six months
                     </span>
+                  ) : product.name === 'YOGI ADV' ? (
+                    <span className="font-body text-stone-600 ml-2 text-lg">
+                      for the year
+                    </span>
                   ) : (
                     <span className="font-body text-stone-600 ml-2 text-lg">
                       per month
