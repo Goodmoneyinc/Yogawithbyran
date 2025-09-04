@@ -20,7 +20,7 @@ export const products: Product[] = [
     id: 'prod_SzkGJAZSMNc3Qi',
     priceId: 'price_1S3kmNGHz3Ny4kcE6vSpbRm4',
     name: 'YOGI PRE',
-    description: 'Intermediate yoga program with flowing sequences and deeper poses. Build strength and flexibility with guided practice.',
+    description: 'Intermediate yoga program with flowing sequences and deeper poses. Build strength and flexibility with guided practice for 6 months.',
     mode: 'subscription',
     price: '$99.00'
   },
