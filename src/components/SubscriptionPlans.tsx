@@ -126,9 +126,15 @@ export default function SubscriptionPlans() {
                   <span className="text-4xl font-heading font-semibold text-stone-800">
                     {product.price}
                   </span>
-                  <span className="font-body text-stone-600 ml-2 text-lg">
-                    per month
-                  </span>
+                  {product.name === 'YOGI PRE' ? (
+                    <span className="font-body text-stone-600 ml-2 text-lg">
+                      per six months
+                    </span>
+                  ) : (
+                    <span className="font-body text-stone-600 ml-2 text-lg">
+                      per month
+                    </span>
+                  )}
                 </div>
                 
                 <ul className="space-y-3 mb-8">
