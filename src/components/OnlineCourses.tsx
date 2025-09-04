@@ -14,7 +14,8 @@ const courses = [
     
     description: "Perfect introduction to yoga with gentle poses and breathing techniques.",
     lessons: 4,
-    videoDuration: "15-30 min"
+    videoDuration: "15-30 min",
+    instructor: "bw"
   },
   {
     id: 2,
@@ -27,7 +28,8 @@ const courses = [
     image: "/images/IMG_0633(3).jpg",
     description: "Advance your practice with flowing sequences and deeper poses.",
     lessons: 4,
-    videoDuration: "15-30 min"
+    videoDuration: "15-30 min",
+    instructor: "bw"
   },
   {
     id: 3,
@@ -40,7 +42,8 @@ const courses = [
     image: "/images/IMG_0633(2).jpg",
     description: "Master challenging poses, inversions, and advanced breathing.",
     lessons: 4,
-    videoDuration: "15-30 min"
+    videoDuration: "15-30 min",
+    instructor: "bw"
   },
   {
     id: 4,
@@ -53,7 +56,8 @@ const courses = [
     image: "/images/IMG_0633(4).jpg",
     description: "Bridge the gap to advanced practice with challenging poses and techniques.",
     lessons: 4,
-    videoDuration: "15-30 min"
+    videoDuration: "15-30 min",
+    instructor: "bw"
   },
 ];
 

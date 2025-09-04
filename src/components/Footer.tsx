@@ -11,7 +11,7 @@ export default function Footer() {
             <h3 className="text-2xl font-heading font-medium text-sage-300 mb-4 tracking-wide">
               <span className="text-sage-200">Yoga</span>
               <span className="text-sage-400 italic mx-2 font-script">with</span>
-              <span className="text-sage-300 font-semibold">Bryan</span>
+              <span className="text-sage-300 font-semibold">bw</span>
             </h3>
             <p className="font-body text-stone-300 mb-6 font-light">
               Transform your life through mindful yoga practice. Join thousands of students 
@@ -81,7 +81,7 @@ export default function Footer() {
         <div className="border-t border-stone-700 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="font-body text-stone-400 text-sm">
-              © 2025 Yoga with Bryan. All rights reserved.
+              © 2025 Yoga with bw. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <a href="#" className="font-body text-stone-400 hover:text-sage-300 text-sm transition-colors">

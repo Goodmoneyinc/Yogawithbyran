@@ -62,7 +62,7 @@ export default function SignupPage() {
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <h1 className="text-3xl font-heading font-semibold text-stone-800 mb-2">
-            Join Yoga with Bryan
+            Join Yoga with bw
           </h1>
           <p className="font-body text-stone-600">
             Create your account to start your yoga journey
