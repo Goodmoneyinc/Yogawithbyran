@@ -51,7 +51,7 @@ export default function Footer() {
             <h4 className="text-lg font-heading font-medium mb-4">Support</h4>
             <ul className="space-y-2">
               <li><a href="#" className="font-body text-stone-300 hover:text-sage-300 transition-colors">Help Center</a></li>
-              <li><a href="#" className="font-body text-stone-300 hover:text-sage-300 transition-colors">Contact Us</a></li>
+              <li><a href="mailto:victorweems57@gmail.com" className="font-body text-stone-300 hover:text-sage-300 transition-colors">Contact Us</a></li>
               <li><a href="#" className="font-body text-stone-300 hover:text-sage-300 transition-colors">FAQs</a></li>
               <li><a href="#" className="font-body text-stone-300 hover:text-sage-300 transition-colors">Refund Policy</a></li>
               <li><a href="#" className="font-body text-stone-300 hover:text-sage-300 transition-colors">Terms of Service</a></li>

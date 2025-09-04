@@ -206,7 +206,7 @@ export default function SubscriptionPlans() {
             </div>
             <p className="text-sm font-body text-stone-600">
               Need a custom plan for your business or organization? 
-              <a href="#contact" className="text-sage-600 hover:underline ml-1">Contact us</a>
+              <a href="mailto:victorweems57@gmail.com" className="text-sage-600 hover:underline ml-1">Contact us</a>
             </p>
           </div>
         </div>
