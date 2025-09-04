@@ -63,7 +63,7 @@ export default function Hero() {
             {/* Modal Header */}
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
               <h2 className="text-2xl font-heading font-semibold text-stone-800">
-                Yoga with Bryan - Preview
+                Yoga with bw - Preview
               </h2>
               <button
                 onClick={() => setShowVideoModal(false)}

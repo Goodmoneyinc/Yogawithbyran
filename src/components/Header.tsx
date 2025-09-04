@@ -24,7 +24,7 @@ export default function Header() {
               <h1 className="text-2xl font-heading font-medium text-sage-700 tracking-wide transform hover:scale-105 transition-transform duration-300 cursor-pointer">
                 <span className="text-sage-800">Yoga</span>
                 <span className="text-sage-600 italic mx-2 font-script">with</span>
-                <span className="text-sage-700 font-semibold">Bryan</span>
+                <span className="text-sage-700 font-semibold">bw</span>
               </h1>
             </div>
           </div>
