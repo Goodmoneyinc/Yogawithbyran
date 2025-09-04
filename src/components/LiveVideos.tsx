@@ -155,64 +155,6 @@ export default function LiveVideos() {
           </div>
         </div>
 
-        {/* Recent Videos Section */}
-        <div className="mb-12">
-          <h3 className="text-2xl font-heading font-medium text-stone-800 mb-6">Recent Videos</h3>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {liveVideos.filter(video => !video.isLive).map((video) => (
-              <div key={video.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow group">
-                <div className="relative cursor-pointer" onClick={() => openVideo(video)}>
-                  <img
-                    src={video.thumbnail}
-                    alt={video.title}
-                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors">
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button className="bg-white/90 text-gray-900 p-4 rounded-full hover:bg-white transition-colors">
-                        <Play className="h-8 w-8" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${levelColors[video.level as keyof typeof levelColors]}`}>
-                      {video.level}
-                    </span>
-                    <div className="flex items-center space-x-1 text-sm text-stone-500">
-                      <Clock className="h-4 w-4" />
-                      <span>{video.duration}</span>
-                    </div>
-                  </div>
-                  
-                  <h3 className="text-xl font-heading font-medium text-stone-800 mb-2">{video.title}</h3>
-                  <p className="font-body text-stone-600 mb-4">{video.description}</p>
-                  
-                  <div className="flex items-center justify-between text-sm font-body text-stone-500">
-                    <div className="flex items-center space-x-1">
-                      <Calendar className="h-4 w-4" />
-                      <span>{video.date}</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Users className="h-4 w-4" />
-                      <span>{video.viewers}</span>
-                    </div>
-                  </div>
-                  
-                  <button 
-                    onClick={() => openVideo(video)}
-                    className="w-full mt-4 bg-stone-600 text-white px-6 py-3 rounded-lg font-body font-medium hover:bg-stone-700 transition-colors flex items-center justify-center space-x-2"
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                    <span>Watch Video</span>
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
 
 
         {/* YouTube Channel Link */}
