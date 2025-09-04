@@ -18,7 +18,7 @@ export default function Hero() {
             
             <h1 className="text-5xl lg:text-6xl font-heading font-semibold text-stone-800 mb-6 leading-tight">
               Don't Quit Anything
-              <span className="text-sage-700 block">Just Add Yoga</span>
+              <span className="text-sage-700 block">Just Add Yoga to Your Resume</span>
             </h1>
             
             <p className="text-xl font-body text-stone-600 mb-8 leading-relaxed font-light">
