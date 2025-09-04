@@ -127,13 +127,27 @@ export default function SubscriptionPlans() {
                     {product.price}
                   </span>
                   {product.name === 'YOGI PRE' ? (
-                    <span className="font-body text-stone-600 ml-2 text-lg">
-                      per six months
-                    </span>
+                    <div>
+                      <span className="font-body text-stone-600 ml-2 text-lg">
+                        per six months
+                      </span>
+                      <div className="mt-2">
+                        <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                          Save $21 vs monthly
+                        </span>
+                      </div>
+                    </div>
                   ) : product.name === 'YOGI ADV' ? (
-                    <span className="font-body text-stone-600 ml-2 text-lg">
-                      for the year
-                    </span>
+                    <div>
+                      <span className="font-body text-stone-600 ml-2 text-lg">
+                        for the year
+                      </span>
+                      <div className="mt-2">
+                        <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                          Save $40 vs monthly
+                        </span>
+                      </div>
+                    </div>
                   ) : (
                     <span className="font-body text-stone-600 ml-2 text-lg">
                       per month
