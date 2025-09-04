@@ -133,7 +133,7 @@ export default function SubscriptionPlans() {
                       </span>
                       <div className="mt-2">
                         <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                          Save $21 vs monthly
+                          Save $21 for six months
                         </span>
                       </div>
                     </div>
@@ -144,7 +144,7 @@ export default function SubscriptionPlans() {
                       </span>
                       <div className="mt-2">
                         <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                          Save $40 vs monthly
+                          Save $40 for the year
                         </span>
                       </div>
                     </div>
