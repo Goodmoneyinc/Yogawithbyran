@@ -53,7 +53,7 @@ export default function SubscriptionPlans() {
     setLoadingPlan(priceId);
     
     try {
-      const successUrl = `${window.location.origin}/success?plan=${encodeURIComponent(planName)}`;
+      const successUrl = `${window.location.origin}/#course-outline`;
       const cancelUrl = window.location.href;
       
       await createCheckoutSession({

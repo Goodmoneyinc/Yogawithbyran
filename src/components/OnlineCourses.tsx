@@ -89,7 +89,7 @@ export default function OnlineCourses() {
     setLoadingCourse(courseId);
     
     try {
-      const successUrl = `${window.location.origin}/success?plan=${encodeURIComponent(courseName)}`;
+      const successUrl = `${window.location.origin}/#course-outline`;
       const cancelUrl = window.location.href;
       
       await createCheckoutSession({
@@ -118,9 +118,10 @@ export default function OnlineCourses() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {courses.map((course) => (
+          {courses.map((course) => {
             const isLoading = loadingCourse === course.id;
             
+            return (
             <div key={course.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow group">
               <div className="relative">
                 <img
@@ -169,7 +170,6 @@ export default function OnlineCourses() {
                     </div>
                     <span className="text-2xl font-heading font-semibold text-sage-700">{course.price}</span>
                   </div>
-                  <button className="bg-sage-600 text-white px-6 py-2 rounded-lg font-body font-medium hover:bg-sage-700 transition-colors">
                   <button 
                     onClick={() => handleEnroll(course.id, course.priceId, course.title)}
                     disabled={isLoading}
@@ -188,7 +188,7 @@ export default function OnlineCourses() {
               </div>
             </div>
             );
-          ))}
+          })}
         </div>
       </div>
     </section>
