@@ -1,10 +1,14 @@
 import React from 'react';
-import { Clock, Users, Star, Play } from 'lucide-react';
+import { Clock, Users, Star, Play, Loader2 } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
+import { createCheckoutSession } from '../lib/stripe';
+import { products } from '../stripe-config';
 
 const courses = [
   {
     id: 1,
     title: "Yoga for Absolute Beginners",
+    priceId: "price_1S3kljGHz3Ny4kcEU2xoQ9lu", // YOGI basic
     level: "Beginner",
     duration: "4 weeks",
     students: "2,340",
@@ -20,6 +24,7 @@ const courses = [
   {
     id: 2,
     title: "Pre-Intermediate Flow Mastery",
+    priceId: "price_1S3kmNGHz3Ny4kcE6vSpbRm4", // YOGI PRE
     level: "Intermediate",
     duration: "6 weeks",
     students: "1,890",
@@ -34,6 +39,7 @@ const courses = [
   {
     id: 3,
     title: "Advanced Yoga Techniques",
+    priceId: "price_1S3knNGHz3Ny4kcE5uwJHFPZ", // YOGI ADV
     level: "Advanced",
     duration: "8 weeks",
     students: "956",
@@ -48,6 +54,7 @@ const courses = [
   {
     id: 4,
     title: "Pre-Advanced Techniques",
+    priceId: "price_1S3kmNGHz3Ny4kcE6vSpbRm4", // YOGI PRE (same as intermediate)
     level: "Intermediate",
     duration: "7 weeks",
     students: "1,156",
@@ -69,6 +76,36 @@ const levelColors = {
 };
 
 export default function OnlineCourses() {
+  const { user } = useAuth();
+  const [loadingCourse, setLoadingCourse] = React.useState<number | null>(null);
+
+  const handleEnroll = async (courseId: number, priceId: string, courseName: string) => {
+    if (!user) {
+      // Redirect to login
+      window.location.href = '/login';
+      return;
+    }
+
+    setLoadingCourse(courseId);
+    
+    try {
+      const successUrl = `${window.location.origin}/success?plan=${encodeURIComponent(courseName)}`;
+      const cancelUrl = window.location.href;
+      
+      await createCheckoutSession({
+        priceId,
+        successUrl,
+        cancelUrl,
+        mode: 'subscription'
+      });
+    } catch (error) {
+      console.error('Error creating checkout session:', error);
+      alert('Failed to start checkout. Please try again.');
+    } finally {
+      setLoadingCourse(null);
+    }
+  };
+
   return (
     <section id="courses" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -82,6 +119,8 @@ export default function OnlineCourses() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {courses.map((course) => (
+            const isLoading = loadingCourse === course.id;
+            
             <div key={course.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow group">
               <div className="relative">
                 <img
@@ -131,11 +170,24 @@ export default function OnlineCourses() {
                     <span className="text-2xl font-heading font-semibold text-sage-700">{course.price}</span>
                   </div>
                   <button className="bg-sage-600 text-white px-6 py-2 rounded-lg font-body font-medium hover:bg-sage-700 transition-colors">
-                    Enroll Now
+                  <button 
+                    onClick={() => handleEnroll(course.id, course.priceId, course.title)}
+                    disabled={isLoading}
+                    className="bg-sage-600 text-white px-6 py-2 rounded-lg font-body font-medium hover:bg-sage-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span>Processing...</span>
+                      </>
+                    ) : (
+                      <span>Enroll Now</span>
+                    )}
                   </button>
                 </div>
               </div>
             </div>
+            );
           ))}
         </div>
       </div>
