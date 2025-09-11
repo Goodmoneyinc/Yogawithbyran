@@ -38,6 +38,21 @@ const courses = [
   },
   {
     id: 3,
+    title: "Pre-Advanced Techniques",
+    priceId: "price_1S3kmNGHz3Ny4kcE6vSpbRm4", // YOGI PRE (same as intermediate)
+    level: "Intermediate",
+    duration: "7 weeks",
+    students: "1,156",
+    rating: 4.9,
+    price: "$20",
+    image: "/images/IMG_0633(4).jpg",
+    description: "Bridge the gap to advanced practice with challenging poses and techniques.",
+    lessons: 4,
+    videoDuration: "15-30 min",
+    instructor: "bw"
+  },
+  {
+    id: 4,
     title: "Advanced Yoga Techniques",
     priceId: "price_1S3knNGHz3Ny4kcE5uwJHFPZ", // YOGI ADV
     level: "Advanced",
@@ -47,21 +62,6 @@ const courses = [
     price: "$20",
     image: "/images/IMG_0633(2).jpg",
     description: "Master challenging poses, inversions, and advanced breathing.",
-    lessons: 4,
-    videoDuration: "15-30 min",
-    instructor: "bw"
-  },
-  {
-    id: 4,
-    title: "Pre-Advanced Techniques",
-    priceId: "price_1S3kmNGHz3Ny4kcE6vSpbRm4", // YOGI PRE (same as intermediate)
-    level: "Intermediate",
-    duration: "7 weeks",
-    students: "1,156",
-    rating: 5.0,
-    price: "$20",
-    image: "/images/IMG_0633(4).jpg",
-    description: "Bridge the gap to advanced practice with challenging poses and techniques.",
     lessons: 4,
     videoDuration: "15-30 min",
     instructor: "bw"
