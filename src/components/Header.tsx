@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, X, User, ShoppingCart, Heart, LogOut } from 'lucide-react';
+import { Menu, X, User, ShoppingCart, Heart, LogOut, Facebook, Instagram, Youtube } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useSubscription } from '../hooks/useSubscription';
 
@@ -38,6 +38,48 @@ export default function Header() {
             <a href="#plans" className="text-stone-700 hover:text-sage-600 transition-colors">Subscription</a>
             <a href="#lms" className="text-stone-700 hover:text-sage-600 transition-colors">Yogi Progress</a>
             <a href="#shop" className="text-gray-400 cursor-not-allowed">Shop (Coming Soon)</a>
+            
+            {/* Social Media Icons */}
+            <div className="flex items-center space-x-3 ml-4 pl-4 border-l border-gray-200">
+              <a 
+                href="https://www.facebook.com/share/17REGV9S8G/?mibextid=wwXIfr" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-stone-600 hover:text-blue-600 transition-colors"
+                title="Follow on Facebook"
+              >
+                <Facebook className="h-5 w-5" />
+              </a>
+              <a 
+                href="https://www.instagram.com/weems_bryan?igsh=MWVmdTJzMnphMndoaA==" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-stone-600 hover:text-pink-600 transition-colors"
+                title="Follow on Instagram"
+              >
+                <Instagram className="h-5 w-5" />
+              </a>
+              <a 
+                href="https://youtube.com/@yogawithbryan-h2x?si=BQoODmoxmpwxvC3M" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-stone-600 hover:text-red-600 transition-colors"
+                title="Subscribe on YouTube"
+              >
+                <Youtube className="h-5 w-5" />
+              </a>
+              <a 
+                href="https://tiktok.com/@yogawithbryan" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-stone-600 hover:text-black transition-colors"
+                title="Follow on TikTok"
+              >
+                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                </svg>
+              </a>
+            </div>
           </nav>
 
           {/* Desktop Actions */}
@@ -110,6 +152,48 @@ export default function Header() {
               <a href="#plans" className="block px-3 py-2 text-stone-700 hover:text-sage-600 transition-colors">Subscription</a>
               <a href="#lms" className="block px-3 py-2 text-stone-700 hover:text-sage-600 transition-colors">Yogi Progress</a>
               <a href="#shop" className="block px-3 py-2 text-gray-400 cursor-not-allowed">Shop (Coming Soon)</a>
+              
+              {/* Mobile Social Icons */}
+              <div className="border-t border-gray-200 pt-4 mt-4">
+                <p className="px-3 py-2 text-sm font-medium text-stone-600">Follow Us</p>
+                <div className="flex justify-center space-x-6 px-3 py-2">
+                  <a 
+                    href="https://www.facebook.com/share/17REGV9S8G/?mibextid=wwXIfr" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-stone-600 hover:text-blue-600 transition-colors"
+                  >
+                    <Facebook className="h-6 w-6" />
+                  </a>
+                  <a 
+                    href="https://www.instagram.com/weems_bryan?igsh=MWVmdTJzMnphMndoaA==" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-stone-600 hover:text-pink-600 transition-colors"
+                  >
+                    <Instagram className="h-6 w-6" />
+                  </a>
+                  <a 
+                    href="https://youtube.com/@yogawithbryan-h2x?si=BQoODmoxmpwxvC3M" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-stone-600 hover:text-red-600 transition-colors"
+                  >
+                    <Youtube className="h-6 w-6" />
+                  </a>
+                  <a 
+                    href="https://tiktok.com/@yogawithbryan" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-stone-600 hover:text-black transition-colors"
+                  >
+                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+              
               {user ? (
                 <div className="border-t border-gray-200 pt-2 mt-2">
                   <div className="px-3 py-2 text-sm font-body text-stone-600">
