@@ -7,7 +7,7 @@ import { products } from '../stripe-config';
 const courses = [
   {
     id: 1,
-    title: "Yoga for Absolute Beginners",
+    title: "Beginners 1",
     priceId: "price_1S3kljGHz3Ny4kcEU2xoQ9lu", // YOGI basic
     level: "Beginner",
     duration: "4 weeks",
@@ -23,45 +23,45 @@ const courses = [
   },
   {
     id: 2,
-    title: "Pre-Intermediate Flow Mastery",
+    title: "Beginners 2",
     priceId: "price_1S3kmNGHz3Ny4kcE6vSpbRm4", // YOGI PRE
-    level: "Intermediate",
+    level: "Beginner",
     duration: "6 weeks",
     students: "1,890",
     rating: 4.8,
     price: "$20",
     image: "/images/IMG_0633(3).jpg",
-    description: "Advance your practice with flowing sequences and deeper poses.",
+    description: "Continue building your foundation with flowing sequences and deeper poses.",
     lessons: 4,
     videoDuration: "15-30 min",
     instructor: "bw"
   },
   {
     id: 3,
-    title: "Pre-Advanced Techniques",
+    title: "Beginners 3",
     priceId: "price_1S3kmNGHz3Ny4kcE6vSpbRm4", // YOGI PRE (same as intermediate)
-    level: "Intermediate",
+    level: "Beginner",
     duration: "7 weeks",
     students: "1,156",
     rating: 4.9,
     price: "$20",
     image: "/images/IMG_0633(4).jpg",
-    description: "Bridge the gap to advanced practice with challenging poses and techniques.",
+    description: "Develop strength and flexibility with more challenging beginner poses and techniques.",
     lessons: 4,
     videoDuration: "15-30 min",
     instructor: "bw"
   },
   {
     id: 4,
-    title: "Advanced Yoga Techniques",
+    title: "Beginners 4",
     priceId: "price_1S3knNGHz3Ny4kcE5uwJHFPZ", // YOGI ADV
-    level: "Advanced",
+    level: "Beginner",
     duration: "8 weeks",
     students: "956",
     rating: 4.9,
     price: "$20",
     image: "/images/IMG_0633(2).jpg",
-    description: "Master challenging poses, inversions, and advanced breathing.",
+    description: "Complete your beginner journey with confidence-building poses and breathing techniques.",
     lessons: 4,
     videoDuration: "15-30 min",
     instructor: "bw"
