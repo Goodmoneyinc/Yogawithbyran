@@ -3,6 +3,8 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
+let supabase;
+
 if (!supabaseUrl || !supabaseAnonKey) {
   console.error('Missing Supabase environment variables. Please check your .env file.');
   console.error('Required variables: VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY');
@@ -24,11 +26,13 @@ if (!supabaseUrl || !supabaseAnonKey) {
     })
   };
   
-  // @ts-ignore - Mock client for development
-  export const supabase = mockClient;
+  // @ts-ignore - Mock client for development  
+  supabase = mockClient;
 } else {
-  export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+  supabase = createClient(supabaseUrl, supabaseAnonKey);
 }
+
+export { supabase };
 
 export interface UserSubscription {
   customer_id: string;
