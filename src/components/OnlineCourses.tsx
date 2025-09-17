@@ -24,12 +24,12 @@ const courses = [
   {
     id: 2,
     title: "Beginner 2",
-    priceId: "price_1S7khi9wDfAiVIZSc1j1C58H", // Basic Yogi
+    priceId: "price_1S7kim9wDfAiVIZSQYhypnfc", // Yogi Pre
     level: "Beginner",
     duration: "6 weeks",
     students: "1,890",
     rating: 4.8,
-    price: "$20",
+    price: "$99",
     image: "/images/IMG_0633(3).jpg",
     description: "Continue building your foundation with flowing sequences and deeper poses.",
     lessons: 4,
@@ -39,12 +39,12 @@ const courses = [
   {
     id: 3,
     title: "Beginner 3",
-    priceId: "price_1S7khi9wDfAiVIZSc1j1C58H", // Basic Yogi
+    priceId: "price_1S7kim9wDfAiVIZSQYhypnfc", // Yogi Pre
     level: "Beginner",
     duration: "7 weeks",
     students: "1,156",
     rating: 4.9,
-    price: "$20",
+    price: "$99",
     image: "/images/IMG_0633(4).jpg",
     description: "Develop strength and flexibility with more challenging beginner poses and techniques.",
     lessons: 4,
@@ -54,12 +54,12 @@ const courses = [
   {
     id: 4,
     title: "Beginner 4",
-    priceId: "price_1S7khi9wDfAiVIZSc1j1C58H", // Basic Yogi
+    priceId: "price_1S7kjI9wDfAiVIZSGdd7hPVG", // YOGI avd
     level: "Beginner",
     duration: "8 weeks",
     students: "956",
     rating: 4.9,
-    price: "$20",
+    price: "$190",
     image: "/images/IMG_0633(2).jpg",
     description: "Complete your beginner journey with confidence-building poses and breathing techniques.",
     lessons: 4,
