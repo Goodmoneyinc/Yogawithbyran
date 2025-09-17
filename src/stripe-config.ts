@@ -9,25 +9,25 @@ export interface Product {
 
 export const products: Product[] = [
   {
-    id: 'prod_SzkGjzAt3Em7Zh',
-    priceId: 'price_1S3kljGHz3Ny4kcEU2xoQ9lu',
-    name: 'YOGI basic',
+    id: 'prod_T3sSXtlhA74UG3',
+    priceId: 'price_1S7khi9wDfAiVIZSc1j1C58H',
+    name: 'Basic Yogi',
     description: 'Essential yoga practice with foundational poses and breathing techniques. Perfect for beginners starting their yoga journey.',
     mode: 'subscription',
     price: '$20.00'
   },
   {
-    id: 'prod_SzkGJAZSMNc3Qi',
-    priceId: 'price_1S3kmNGHz3Ny4kcE6vSpbRm4',
-    name: 'YOGI PRE',
-    description: 'Intermediate yoga program with flowing sequences and deeper poses. Build strength and flexibility with guided practice for 6 months.',
+    id: 'prod_T3sTUFbZg5RkQW',
+    priceId: 'price_1S7kim9wDfAiVIZSQYhypnfc',
+    name: 'Yogi Pre',
+    description: 'Intermediate yoga program with flowing sequences and deeper poses. Build strength and flexibility with guided practice.',
     mode: 'subscription',
     price: '$99.00'
   },
   {
-    id: 'prod_SzkHvBaBUup1gY',
-    priceId: 'price_1S3knNGHz3Ny4kcE5uwJHFPZ',
-    name: 'YOGI ADV',
+    id: 'prod_T3sUwOsOgCrAa1',
+    priceId: 'price_1S7kjI9wDfAiVIZSGdd7hPVG',
+    name: 'YOGI avd',
     description: 'Advanced yoga techniques including challenging poses, inversions, and advanced breathing methods. Master your practice.',
     mode: 'subscription',
     price: '$190.00'

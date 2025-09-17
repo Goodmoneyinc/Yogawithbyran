@@ -34,7 +34,7 @@ export function useSubscription() {
     ? getProductByPriceId(subscription.price_id)
     : null;
 
-  const isActive = subscription?.subscription_status === 'active';
+  const isActive = subscription?.subscription_status === 'active' || subscription?.subscription_status === 'trialing';
 
   return {
     subscription,

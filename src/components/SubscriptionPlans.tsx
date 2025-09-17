@@ -71,13 +71,13 @@ export default function SubscriptionPlans() {
   };
 
   const getFeatures = (productName: string) => {
-    if (productName.includes('basic')) return planFeatures.basic;
-    if (productName.includes('PRE')) return planFeatures.pre;
-    if (productName.includes('ADV')) return planFeatures.adv;
+    if (productName.toLowerCase().includes('basic')) return planFeatures.basic;
+    if (productName.toLowerCase().includes('pre')) return planFeatures.pre;
+    if (productName.toLowerCase().includes('avd')) return planFeatures.adv;
     return planFeatures.basic;
   };
 
-  const isPopular = (productName: string) => productName.includes('PRE');
+  const isPopular = (productName: string) => productName.toLowerCase().includes('pre');
 
   return (
     <section id="plans" className="py-20 bg-white">
@@ -126,27 +126,17 @@ export default function SubscriptionPlans() {
                   <span className="text-4xl font-heading font-semibold text-stone-800">
                     {product.price}
                   </span>
-                  {product.name === 'YOGI PRE' ? (
+                  {product.name === 'Yogi Pre' ? (
                     <div>
                       <span className="font-body text-stone-600 ml-2 text-lg">
-                        per six months
+                        per month
                       </span>
-                      <div className="mt-2">
-                        <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                          Save $21 for six months
-                        </span>
-                      </div>
                     </div>
-                  ) : product.name === 'YOGI ADV' ? (
+                  ) : product.name === 'YOGI avd' ? (
                     <div>
                       <span className="font-body text-stone-600 ml-2 text-lg">
-                        for the year
+                        per month
                       </span>
-                      <div className="mt-2">
-                        <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                          Save $50 for the year
-                        </span>
-                      </div>
                     </div>
                   ) : (
                     <span className="font-body text-stone-600 ml-2 text-lg">
