@@ -19,7 +19,7 @@ export async function createCheckoutSession({
     throw new Error('User not authenticated');
   }
 
-  const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/stripe-checkout`, {
+  const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-checkout`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

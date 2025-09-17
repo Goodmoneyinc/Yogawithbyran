@@ -9,9 +9,12 @@ export default function SuccessPage() {
   useEffect(() => {
     // Get plan name from URL params
     const urlParams = new URLSearchParams(window.location.search);
-    const plan = urlParams.get('plan');
-    if (plan) {
-      setPlanName(decodeURIComponent(plan));
+    const sessionId = urlParams.get('session_id');
+    
+    // In a real implementation, you would fetch the session details from Stripe
+    // For now, we'll show a generic success message
+    if (sessionId) {
+      setPlanName('Your Subscription');
     }
   }, []);
 

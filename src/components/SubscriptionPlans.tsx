@@ -71,13 +71,13 @@ export default function SubscriptionPlans() {
   };
 
   const getFeatures = (productName: string) => {
-    if (productName.toLowerCase().includes('basic')) return planFeatures.basic;
-    if (productName.toLowerCase().includes('pre')) return planFeatures.pre;
-    if (productName.toLowerCase().includes('avd')) return planFeatures.adv;
+    if (productName === 'Basic Yogi') return planFeatures.basic;
+    if (productName === 'Yogi Pre') return planFeatures.pre;
+    if (productName === 'YOGI avd') return planFeatures.adv;
     return planFeatures.basic;
   };
 
-  const isPopular = (productName: string) => productName.toLowerCase().includes('pre');
+  const isPopular = (productName: string) => productName === 'Yogi Pre';
 
   return (
     <section id="plans" className="py-20 bg-white">
@@ -126,23 +126,9 @@ export default function SubscriptionPlans() {
                   <span className="text-4xl font-heading font-semibold text-stone-800">
                     {product.price}
                   </span>
-                  {product.name === 'Yogi Pre' ? (
-                    <div>
-                      <span className="font-body text-stone-600 ml-2 text-lg">
-                        per month
-                      </span>
-                    </div>
-                  ) : product.name === 'YOGI avd' ? (
-                    <div>
-                      <span className="font-body text-stone-600 ml-2 text-lg">
-                        per month
-                      </span>
-                    </div>
-                  ) : (
-                    <span className="font-body text-stone-600 ml-2 text-lg">
-                      per month
-                    </span>
-                  )}
+                  <span className="font-body text-stone-600 ml-2 text-lg">
+                    per month
+                  </span>
                 </div>
                 
                 <ul className="space-y-3 mb-8">

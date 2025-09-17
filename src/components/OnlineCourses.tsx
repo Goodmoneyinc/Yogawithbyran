@@ -8,7 +8,7 @@ const courses = [
   {
     id: 1,
     title: "Beginner 1",
-    priceId: "price_1S7khi9wDfAiVIZSc1j1C58H", // Basic Yogi
+    priceId: "price_1S7khi9wDfAiVIZSc1j1C58H",
     level: "Beginner",
     duration: "4 weeks",
     students: "2,340",
@@ -24,7 +24,7 @@ const courses = [
   {
     id: 2,
     title: "Beginner 2",
-    priceId: "price_1S7kim9wDfAiVIZSQYhypnfc", // Yogi Pre
+    priceId: "price_1S7kim9wDfAiVIZSQYhypnfc",
     level: "Beginner",
     duration: "6 weeks",
     students: "1,890",
@@ -39,7 +39,7 @@ const courses = [
   {
     id: 3,
     title: "Beginner 3",
-    priceId: "price_1S7kim9wDfAiVIZSQYhypnfc", // Yogi Pre
+    priceId: "price_1S7kim9wDfAiVIZSQYhypnfc",
     level: "Beginner",
     duration: "7 weeks",
     students: "1,156",
@@ -54,7 +54,7 @@ const courses = [
   {
     id: 4,
     title: "Beginner 4",
-    priceId: "price_1S7kjI9wDfAiVIZSGdd7hPVG", // YOGI avd
+    priceId: "price_1S7kjI9wDfAiVIZSGdd7hPVG",
     level: "Beginner",
     duration: "8 weeks",
     students: "956",
