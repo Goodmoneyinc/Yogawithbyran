@@ -3,9 +3,6 @@ import { Clock, Users, Star, Play, Loader2 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { createCheckoutSession } from '../lib/stripe';
 import { products } from '../stripe-config';
-import { useAuth } from '../hooks/useAuth';
-import { createCheckoutSession } from '../lib/stripe';
-import { products } from '../stripe-config';
 
 const courses = [
   {
