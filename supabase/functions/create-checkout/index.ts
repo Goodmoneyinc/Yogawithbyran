@@ -145,7 +145,59 @@ Deno.serve(async (req) => {
 
       console.log(`Successfully set up new customer ${customerId} with subscription record`);
     } else {
-      customerId = customer.customer_id;
+      // Verify the customer exists in Stripe
+      try {
+        await stripe.customers.retrieve(customer.customer_id);
+        customerId = customer.customer_id;
+      } catch (stripeError: any) {
+        if (stripeError.code === 'resource_missing') {
+          console.log(`Stale customer ID ${customer.customer_id} found, creating new customer for user ${user.id}`);
+          
+          // Soft delete the stale record
+          const { error: softDeleteError } = await supabase
+            .from('stripe_customers')
+            .update({ deleted_at: new Date().toISOString() })
+            .eq('user_id', user.id);
+
+          if (softDeleteError) {
+            console.error('Failed to soft delete stale customer record', softDeleteError);
+          }
+
+          // Create a new Stripe customer
+          const newCustomer = await stripe.customers.create({
+            email: user.email,
+            metadata: {
+              userId: user.id,
+            },
+          });
+
+          console.log(`Created new Stripe customer ${newCustomer.id} for user ${user.id} to replace stale ID`);
+
+          // Insert new customer record
+          const { error: createCustomerError } = await supabase.from('stripe_customers').insert({
+            user_id: user.id,
+            customer_id: newCustomer.id,
+          });
+
+          if (createCustomerError) {
+            console.error('Failed to save new customer information in the database', createCustomerError);
+
+            // Try to clean up the Stripe customer
+            try {
+              await stripe.customers.del(newCustomer.id);
+            } catch (deleteError) {
+              console.error('Failed to delete Stripe customer after database error:', deleteError);
+            }
+
+            return corsResponse({ error: 'Failed to create new customer mapping' }, 500);
+          }
+
+          customerId = newCustomer.id;
+        } else {
+          console.error('Failed to retrieve customer from Stripe', stripeError);
+          return corsResponse({ error: 'Failed to verify customer information' }, 500);
+        }
+      }
 
       if (mode === 'subscription') {
         // Verify subscription exists for existing customer
