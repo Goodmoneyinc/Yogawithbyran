@@ -3,6 +3,9 @@ import { Clock, Users, Star, Play, Loader2 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { createCheckoutSession } from '../lib/stripe';
 import { products } from '../stripe-config';
+import { useAuth } from '../hooks/useAuth';
+import { createCheckoutSession } from '../lib/stripe';
+import { products } from '../stripe-config';
 
 const courses = [
   {
@@ -105,6 +108,35 @@ export default function OnlineCourses() {
       setLoadingCourse(null);
     }
   };
+  const { user } = useAuth();
+  const [loadingCourse, setLoadingCourse] = React.useState<number | null>(null);
+
+  const handleEnroll = async (courseId: number, priceId: string, courseName: string) => {
+    if (!user) {
+      // Redirect to login
+      window.location.href = '/login';
+      return;
+    }
+
+    setLoadingCourse(courseId);
+    
+    try {
+      const successUrl = `${window.location.origin}/#course-outline`;
+      const cancelUrl = window.location.href;
+      
+      await createCheckoutSession({
+        priceId,
+        successUrl,
+        cancelUrl,
+        mode: 'subscription'
+      });
+    } catch (error) {
+      console.error('Error creating checkout session:', error);
+      alert('Failed to start checkout. Please try again.');
+    } finally {
+      setLoadingCourse(null);
+    }
+  };
 
   return (
     <section id="courses" className="py-20 bg-white">
@@ -119,6 +151,9 @@ export default function OnlineCourses() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {courses.map((course) => {
+            const isLoading = loadingCourse === course.id;
+            
+            return (
             const isLoading = loadingCourse === course.id;
             
             return (
@@ -173,6 +208,8 @@ export default function OnlineCourses() {
                   <button 
                     onClick={() => handleEnroll(course.id, course.priceId, course.title)}
                     disabled={isLoading}
+                    onClick={() => handleEnroll(course.id, course.priceId, course.title)}
+                    disabled={isLoading}
                     className="bg-sage-600 text-white px-6 py-2 rounded-lg font-body font-medium hover:bg-sage-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                   >
                     {isLoading ? (
@@ -181,12 +218,20 @@ export default function OnlineCourses() {
                         <span>Processing...</span>
                       </>
                     ) : (
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span>Processing...</span>
+                      </>
+                    ) : (
                       <span>Enroll Now</span>
+                    )}
                     )}
                   </button>
                 </div>
               </div>
             </div>
+            );
             );
           })}
         </div>
