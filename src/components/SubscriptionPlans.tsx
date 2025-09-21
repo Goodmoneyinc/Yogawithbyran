@@ -127,7 +127,8 @@ export default function SubscriptionPlans() {
                     {product.price}
                   </span>
                   <span className="font-body text-stone-600 ml-2 text-lg">
-                    {product.name === 'Yogi Pre' ? 'for 6 months' : 'per month'}
+                    {product.name === 'Yogi Pre' ? 'for 6 months' : 
+                     product.name === 'YOGI avd' ? 'per year' : 'per month'}
                   </span>
                 </div>
                 

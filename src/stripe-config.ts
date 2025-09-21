@@ -30,7 +30,7 @@ export const products: Product[] = [
     name: 'YOGI avd',
     description: 'Advanced yoga techniques including challenging poses, inversions, and advanced breathing methods. Master your practice.',
     mode: 'subscription',
-    price: '$20'
+    price: '$190'
   }
 ];
 
