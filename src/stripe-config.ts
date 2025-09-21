@@ -22,7 +22,7 @@ export const products: Product[] = [
     name: 'Yogi Pre',
     description: 'Intermediate yoga program with flowing sequences and deeper poses. Build strength and flexibility with guided practice.',
     mode: 'subscription',
-    price: '$20'
+    price: '$99'
   },
   {
     id: 'prod_T3sUwOsOgCrAa1',
