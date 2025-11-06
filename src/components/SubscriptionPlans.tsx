@@ -13,28 +13,20 @@ const planFeatures = {
     "Mobile app access"
   ],
   pre: [
-    "Access to ALL courses",
-    "Intermediate & advanced content",
-    "Premium community access",
-    "Priority email support",
-    "Downloadable resources",
+    "Access to beginner courses",
+    "Basic breathing techniques",
+    "Community forum access",
+    "Email support",
     "Progress tracking",
-    "Live Q&A sessions",
-    "Personalized practice plans"
+    "Mobile app access"
   ],
   adv: [
-    "Access to ALL courses",
-    "Advanced techniques & inversions",
-    "Premium community access",
-    "One-on-one consultations",
-    "Priority support",
-    "Downloadable resources",
+    "Access to beginner courses",
+    "Basic breathing techniques",
+    "Community forum access",
+    "Email support",
     "Progress tracking",
-    "Live Q&A sessions",
-    "Personalized practice plans",
-    "Workshop early access",
-    "Exclusive merchandise discounts",
-    "Annual retreat discounts"
+    "Mobile app access"
   ]
 };
 
