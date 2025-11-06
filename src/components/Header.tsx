@@ -67,19 +67,24 @@ export default function Header() {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <div className="flex flex-col items-start">
-              <div className="flex items-center space-x-2 mb-2">
-                <div className="w-20 h-20 rounded-full overflow-hidden">
-                  <img 
-                    src="/IMG_0633.jpg" 
-                    alt="Yoga with Bryan Logo" 
-                    className="w-full h-full object-cover"
-                  />
+              <div className="flex flex-col">
+                <div className="flex items-center space-x-2 mb-1">
+                  <div className="w-20 h-20 rounded-full overflow-hidden">
+                    <img
+                      src="/IMG_0633.jpg"
+                      alt="Yoga with Bryan Logo"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <h1 className="text-3xl font-heading font-medium text-sage-700 tracking-wide transform hover:scale-105 transition-transform duration-300 cursor-pointer">
+                    <span className="text-sage-800">Yoga</span>
+                    <span className="text-sage-600 italic mx-2 font-script">with</span>
+                    <span className="text-sage-700 font-semibold">bw</span>
+                  </h1>
                 </div>
-                <h1 className="text-3xl font-heading font-medium text-sage-700 tracking-wide transform hover:scale-105 transition-transform duration-300 cursor-pointer">
-                  <span className="text-sage-800">Yoga</span>
-                  <span className="text-sage-600 italic mx-2 font-script">with</span>
-                  <span className="text-sage-700 font-semibold">bw</span>
-                </h1>
+                <p className="text-sm font-body text-stone-600 italic ml-24">
+                  Don't quit anything add Americanized Yoga to your resume
+                </p>
               </div>
               
               {/* Social Media Icons under logo */}
