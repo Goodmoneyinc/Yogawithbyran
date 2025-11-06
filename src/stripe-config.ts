@@ -19,7 +19,7 @@ export const products: Product[] = [
   {
     id: 'prod_T3sTUFbZg5RkQW',
     priceId: 'price_1S7kim9wDfAiVIZSQYhypnfc',
-    name: 'Yoga Pre',
+    name: 'Yoga',
     description: 'Essential yoga practice with foundational poses and breathing techniques. Perfect for beginners starting their yoga journey.',
     mode: 'subscription',
     price: '$99'
@@ -27,7 +27,7 @@ export const products: Product[] = [
   {
     id: 'prod_T3sUwOsOgCrAa1',
     priceId: 'price_1S7kjI9wDfAiVIZSGdd7hPVG',
-    name: 'YOGA avd',
+    name: 'YOGA',
     description: 'Essential yoga practice with foundational poses and breathing techniques. Perfect for beginners starting their yoga journey.',
     mode: 'subscription',
     price: '$190'
