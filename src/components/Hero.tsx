@@ -1,23 +1,17 @@
 import React from 'react';
 import { Play, Star, X } from 'lucide-react';
-import { createCheckoutSession } from '../lib/stripe';
 
 export default function Hero() {
   const [showVideoModal, setShowVideoModal] = React.useState(false);
 
   const handleStartJourney = async () => {
-    try {
-      await createCheckoutSession({
-        priceId: 'price_1S7khi9wDfAiVIZSc1j1C58H', // Basic Yogi plan
-        successUrl: `${window.location.origin}/success`,
-        cancelUrl: window.location.href,
-        mode: 'subscription'
-      });
-    } catch (error) {
-      console.error('Error creating checkout session:', error);
-      alert('Failed to start checkout. Please try again.');
+    // Scroll to subscription plans section
+    const plansSection = document.getElementById('plans');
+    if (plansSection) {
+      plansSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
+  
   return (
     <>
       <section id="home" className="relative bg-gradient-to-br from-sage-50 to-stone-50 py-20">

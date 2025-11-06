@@ -1,7 +1,7 @@
 import React from 'react';
 import { Check, Star, Crown, Calendar, Loader2 } from 'lucide-react';
 import { products } from '../stripe-config';
-import { createCheckoutSession } from '../lib/stripe';
+import { supabase } from '../lib/supabase';
 
 const planFeatures = {
   basic: [
@@ -45,15 +45,42 @@ export default function SubscriptionPlans() {
     setLoadingPlan(priceId);
     
     try {
-      await createCheckoutSession({
-        priceId: priceId,
-        successUrl: `${window.location.origin}/success`,
-        cancelUrl: window.location.href,
-        mode: 'subscription'
+      // Check if user is authenticated
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        alert('Please sign up or sign in to subscribe to a plan.');
+        setLoadingPlan(null);
+        return;
+      }
+
+      // Call the Supabase edge function to create checkout session
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        body: {
+          price_id: priceId,
+          success_url: `${window.location.origin}/success`,
+          cancel_url: window.location.href,
+          mode: 'subscription'
+        },
+        headers: {
+          Authorization: `Bearer ${session.access_token}`
+        }
       });
+
+      if (error) {
+        console.error('Error creating checkout session:', error);
+        throw new Error('Failed to create checkout session');
+      }
+
+      if (data?.url) {
+        // Redirect to Stripe checkout
+        window.location.href = data.url;
+      } else {
+        throw new Error('No checkout URL returned');
+      }
     } catch (error) {
       console.error('Error creating checkout session:', error);
-      alert('Failed to start checkout. Please try again.');
+      alert('Unable to process checkout at this time. Please try again later.');
     } finally {
       setLoadingPlan(null);
     }

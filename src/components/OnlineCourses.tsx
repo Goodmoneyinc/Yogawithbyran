@@ -1,6 +1,5 @@
 import React from 'react';
 import { Clock, Users, Star, Play, Loader2 } from 'lucide-react';
-import { createCheckoutSession } from '../lib/stripe';
 
 const courses = [
   {
@@ -77,21 +76,8 @@ export default function OnlineCourses() {
   const [loadingCourse, setLoadingCourse] = React.useState<number | null>(null);
 
   const handleEnroll = async (courseId: number, priceId: string, courseName: string) => {
-    setLoadingCourse(courseId);
-    
-    try {
-      await createCheckoutSession({
-        priceId: priceId,
-        successUrl: `${window.location.origin}/success`,
-        cancelUrl: window.location.href,
-        mode: 'payment'
-      });
-    } catch (error) {
-      console.error('Error creating checkout session:', error);
-      alert('Failed to start checkout. Please try again.');
-    } finally {
-      setLoadingCourse(null);
-    }
+    // Redirect to course outline for now
+    window.location.hash = '#course-outline';
   };
 
   return (
@@ -160,17 +146,9 @@ export default function OnlineCourses() {
                   </div>
                   <button 
                     onClick={() => handleEnroll(course.id, course.priceId, course.title)}
-                    disabled={isLoading}
-                    className="bg-sage-600 text-white px-6 py-2 rounded-lg font-body font-medium hover:bg-sage-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                    className="bg-sage-600 text-white px-6 py-2 rounded-lg font-body font-medium hover:bg-sage-700 transition-colors"
                   >
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        <span>Processing...</span>
-                      </>
-                    ) : (
-                      <span>Enroll Now</span>
-                    )}
+                    <span>View Course</span>
                   </button>
                 </div>
               </div>
