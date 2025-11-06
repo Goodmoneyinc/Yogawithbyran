@@ -11,7 +11,7 @@ export const products: Product[] = [
   {
     id: 'prod_T3sSXtlhA74UG3',
     priceId: 'price_1S7khi9wDfAiVIZSc1j1C58H',
-    name: 'Basic Yogi',
+    name: 'Basic Yoga',
     description: 'Essential yoga practice with foundational poses and breathing techniques. Perfect for beginners starting their yoga journey.',
     mode: 'subscription',
     price: '$20'
@@ -19,16 +19,16 @@ export const products: Product[] = [
   {
     id: 'prod_T3sTUFbZg5RkQW',
     priceId: 'price_1S7kim9wDfAiVIZSQYhypnfc',
-    name: 'Yogi Pre',
-    description: 'Intermediate yoga program with flowing sequences and deeper poses. Build strength and flexibility with guided practice.',
+    name: 'Yoga Pre',
+    description: 'Essential yoga practice with foundational poses and breathing techniques. Perfect for beginners starting their yoga journey.',
     mode: 'subscription',
     price: '$99'
   },
   {
     id: 'prod_T3sUwOsOgCrAa1',
     priceId: 'price_1S7kjI9wDfAiVIZSGdd7hPVG',
-    name: 'YOGI avd',
-    description: 'Advanced yoga techniques including challenging poses, inversions, and advanced breathing methods. Master your practice.',
+    name: 'YOGA avd',
+    description: 'Essential yoga practice with foundational poses and breathing techniques. Perfect for beginners starting their yoga journey.',
     mode: 'subscription',
     price: '$190'
   }
