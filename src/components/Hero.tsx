@@ -1,9 +1,23 @@
 import React from 'react';
 import { Play, Star, X } from 'lucide-react';
+import { createCheckoutSession } from '../lib/stripe';
 
 export default function Hero() {
   const [showVideoModal, setShowVideoModal] = React.useState(false);
 
+  const handleStartJourney = async () => {
+    try {
+      await createCheckoutSession({
+        priceId: 'price_1S7khi9wDfAiVIZSc1j1C58H', // Basic Yogi plan
+        successUrl: `${window.location.origin}/success`,
+        cancelUrl: window.location.href,
+        mode: 'subscription'
+      });
+    } catch (error) {
+      console.error('Error creating checkout session:', error);
+      alert('Failed to start checkout. Please try again.');
+    }
+  };
   return (
     <>
       <section id="home" className="relative bg-gradient-to-br from-sage-50 to-stone-50 py-20">
@@ -31,7 +45,10 @@ export default function Hero() {
             </p>
             
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-              <button className="bg-sage-600 text-white px-8 py-4 rounded-lg font-body font-medium hover:bg-sage-700 transition-colors shadow-lg">
+              <button 
+                onClick={handleStartJourney}
+                className="bg-sage-600 text-white px-8 py-4 rounded-lg font-body font-medium hover:bg-sage-700 transition-colors shadow-lg"
+              >
                 Start Your Journey
               </button>
               <button 

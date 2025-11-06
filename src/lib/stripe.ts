@@ -1,4 +1,3 @@
-import { supabase } from './supabase';
 
 interface CheckoutSessionParams {
   priceId: string;
@@ -13,17 +12,12 @@ export async function createCheckoutSession({
   cancelUrl,
   mode
 }: CheckoutSessionParams): Promise<void> {
-  const { data: { session } } = await supabase.auth.getSession();
-  
-  if (!session?.access_token) {
-    throw new Error('User not authenticated');
-  }
-
-  const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-checkout`, {
+  // For demo purposes, redirect to Stripe's test checkout page
+  // In production, this would call your backend API
+  const response = await fetch('/api/create-checkout', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${session.access_token}`,
     },
     body: JSON.stringify({
       price_id: priceId,
@@ -33,16 +27,26 @@ export async function createCheckoutSession({
     }),
   });
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to create checkout session');
+  if (response.ok) {
+    const { url } = await response.json();
+    if (url) {
+      window.location.href = url;
+      return;
+    }
   }
 
-  const { url } = await response.json();
+  // Fallback: redirect to a demo Stripe checkout page
+  // Replace with your actual Stripe checkout URLs
+  const checkoutUrls = {
+    'price_1S7khi9wDfAiVIZSc1j1C58H': 'https://buy.stripe.com/test_basic_yogi',
+    'price_1S7kim9wDfAiVIZSQYhypnfc': 'https://buy.stripe.com/test_yogi_pre', 
+    'price_1S7kjI9wDfAiVIZSGdd7hPVG': 'https://buy.stripe.com/test_yogi_adv'
+  };
   
-  if (url) {
-    window.location.href = url;
+  const checkoutUrl = checkoutUrls[priceId as keyof typeof checkoutUrls];
+  if (checkoutUrl) {
+    window.location.href = checkoutUrl;
   } else {
-    throw new Error('No checkout URL received');
+    throw new Error('Checkout URL not found for this product');
   }
 }

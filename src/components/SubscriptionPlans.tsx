@@ -1,6 +1,7 @@
 import React from 'react';
 import { Check, Star, Crown, Calendar, Loader2 } from 'lucide-react';
 import { products } from '../stripe-config';
+import { createCheckoutSession } from '../lib/stripe';
 
 const planFeatures = {
   basic: [
@@ -44,11 +45,12 @@ export default function SubscriptionPlans() {
     setLoadingPlan(priceId);
     
     try {
-      // Simulate subscription process
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Redirect to course outline
-      window.location.hash = '#course-outline';
+      await createCheckoutSession({
+        priceId: priceId,
+        successUrl: `${window.location.origin}/success`,
+        cancelUrl: window.location.href,
+        mode: 'subscription'
+      });
     } catch (error) {
       console.error('Error creating checkout session:', error);
       alert('Failed to start checkout. Please try again.');
