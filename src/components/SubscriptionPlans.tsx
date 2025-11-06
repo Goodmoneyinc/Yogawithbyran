@@ -82,7 +82,7 @@ export default function SubscriptionPlans() {
     return planFeatures.basic;
   };
 
-  const isPopular = (productName: string) => productName === 'Basic Yoga' && products.findIndex(p => p.name === productName) === 1;
+  const isPopular = (product: any) => product.price === '$99';
 
   return (
     <section id="plans" className="py-20 bg-white">
@@ -97,7 +97,7 @@ export default function SubscriptionPlans() {
 
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {products.map((product) => {
-            const popular = isPopular(product.name);
+            const popular = isPopular(product);
             const features = getFeatures(product.name);
             const isLoading = loadingPlan === product.priceId;
             
