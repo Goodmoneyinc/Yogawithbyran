@@ -1,7 +1,5 @@
 import React from 'react';
 import { Clock, Users, Star, Play, Loader2 } from 'lucide-react';
-import { useAuth } from '../hooks/useAuth';
-import { createCheckoutSession } from '../lib/stripe';
 import { products } from '../stripe-config';
 
 const courses = [
@@ -76,28 +74,17 @@ const levelColors = {
 };
 
 export default function OnlineCourses() {
-  const { user } = useAuth();
   const [loadingCourse, setLoadingCourse] = React.useState<number | null>(null);
 
   const handleEnroll = async (courseId: number, priceId: string, courseName: string) => {
-    if (!user) {
-      // Redirect to login
-      window.location.href = '/login';
-      return;
-    }
-
     setLoadingCourse(courseId);
     
     try {
-      const successUrl = `${window.location.origin}/#course-outline`;
-      const cancelUrl = window.location.href;
+      // Simulate enrollment process
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
-      await createCheckoutSession({
-        priceId,
-        successUrl,
-        cancelUrl,
-        mode: 'subscription'
-      });
+      // Redirect to course outline
+      window.location.hash = '#course-outline';
     } catch (error) {
       console.error('Error creating checkout session:', error);
       alert('Failed to start checkout. Please try again.');

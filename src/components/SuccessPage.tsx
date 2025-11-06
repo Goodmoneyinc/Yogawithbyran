@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CheckCircle, ArrowRight, Home } from 'lucide-react';
-import { useAuth } from '../hooks/useAuth';
 
 export default function SuccessPage() {
-  const { user } = useAuth();
   const [planName, setPlanName] = useState<string>('');
 
   useEffect(() => {

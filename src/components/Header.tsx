@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import { Menu, X, User, ShoppingCart, Heart, LogOut, Facebook, Instagram, Youtube } from 'lucide-react';
-import { useAuth } from '../hooks/useAuth';
-import { useSubscription } from '../hooks/useSubscription';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, signOut } = useAuth();
-  const { currentPlan } = useSubscription();
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
@@ -86,41 +82,6 @@ export default function Header() {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            {user ? (
-              <div className="flex items-center space-x-4">
-                {currentPlan && (
-                  <span className="text-sm font-body text-sage-600 bg-sage-50 px-3 py-1 rounded-full">
-                    {currentPlan.name}
-                  </span>
-                )}
-                <div className="flex items-center space-x-2">
-                  <User className="h-5 w-5 text-stone-700" />
-                  <span className="text-sm font-body text-stone-700">{user.email}</span>
-                </div>
-                <button 
-                  onClick={signOut}
-                  className="text-stone-700 hover:text-sage-600 transition-colors"
-                  title="Sign out"
-                >
-                  <LogOut className="h-5 w-5" />
-                </button>
-              </div>
-            ) : (
-              <div className="flex items-center space-x-4">
-                <a 
-                  href="/login" 
-                  className="text-stone-700 hover:text-sage-600 transition-colors font-body"
-                >
-                  Sign In
-                </a>
-                <a 
-                  href="/signup" 
-                  className="bg-sage-600 text-white px-4 py-2 rounded-lg font-body font-medium hover:bg-sage-700 transition-colors"
-                >
-                  Sign Up
-                </a>
-              </div>
-            )}
             <button className="text-stone-700 hover:text-sage-600 transition-colors relative">
               <ShoppingCart className="h-5 w-5" />
               <span className="absolute -top-2 -right-2 bg-sage-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">2</span>
@@ -142,11 +103,6 @@ export default function Header() {
         {isMenuOpen && (
           <div className="md:hidden border-t border-gray-200">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              {user && currentPlan && (
-                <div className="px-3 py-2 text-sm font-body text-sage-600 bg-sage-50 rounded">
-                  Current Plan: {currentPlan.name}
-                </div>
-              )}
               <a href="#home" className="block px-3 py-2 text-stone-700 hover:text-sage-600 transition-colors">Home</a>
               <a href="#courses" className="block px-3 py-2 text-stone-700 hover:text-sage-600 transition-colors">Online Courses</a>
               <a href="#course-outline" className="block px-3 py-2 text-stone-700 hover:text-sage-600 transition-colors">Course Outline</a>
@@ -196,28 +152,11 @@ export default function Header() {
                 </div>
               </div>
               
-              {user ? (
-                <div className="border-t border-gray-200 pt-2 mt-2">
-                  <div className="px-3 py-2 text-sm font-body text-stone-600">
-                    {user.email}
-                  </div>
-                  <button 
-                    onClick={signOut}
-                    className="block w-full text-left px-3 py-2 text-stone-700 hover:text-sage-600 transition-colors"
-                  >
-                    Sign Out
-                  </button>
-                </div>
-              ) : (
-                <div className="border-t border-gray-200 pt-2 mt-2 space-y-1">
-                  <a href="/login" className="block px-3 py-2 text-stone-700 hover:text-sage-600 transition-colors">
-                    Sign In
-                  </a>
-                  <a href="/signup" className="block px-3 py-2 bg-sage-600 text-white rounded mx-3 text-center hover:bg-sage-700 transition-colors">
-                    Sign Up
-                  </a>
-                </div>
-              )}
+              <div className="border-t border-gray-200 pt-2 mt-2">
+                <p className="px-3 py-2 text-sm font-body text-stone-600">
+                  Ready to start your yoga journey?
+                </p>
+              </div>
             </div>
           </div>
         )}
