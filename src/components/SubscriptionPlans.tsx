@@ -79,13 +79,10 @@ export default function SubscriptionPlans() {
   };
 
   const getFeatures = (productName: string) => {
-    if (productName === 'Basic Yoga') return planFeatures.basic;
-    if (productName === 'Yoga') return planFeatures.pre;
-    if (productName === 'YOGA') return planFeatures.adv;
     return planFeatures.basic;
   };
 
-  const isPopular = (productName: string) => productName === 'Yoga';
+  const isPopular = (productName: string) => productName === 'Basic Yoga' && products.findIndex(p => p.name === productName) === 1;
 
   return (
     <section id="plans" className="py-20 bg-white">
@@ -135,8 +132,8 @@ export default function SubscriptionPlans() {
                     {product.price}
                   </span>
                   <span className="font-body text-stone-600 ml-2 text-lg">
-                    {product.name === 'Yoga' ? 'for 6 months' :
-                     product.name === 'YOGA' ? 'per year' : 'per month'}
+                    {products.findIndex(p => p.priceId === product.priceId) === 1 ? 'for 6 months' :
+                     products.findIndex(p => p.priceId === product.priceId) === 2 ? 'per year' : 'per month'}
                   </span>
                 </div>
                 
