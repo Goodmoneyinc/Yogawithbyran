@@ -93,6 +93,7 @@ import CourseOutline from './components/CourseOutline';
 import SuccessPage from './components/SuccessPage';
 
 function App() {
+  return (
     <AuthProvider>
       <Router>
         <AppRoutes />
