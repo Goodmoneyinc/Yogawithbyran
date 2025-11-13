@@ -1,64 +1,8 @@
 import React, { useState } from 'react';
-import { Menu, X, User, ShoppingCart, Heart, LogOut, Facebook, Instagram, Youtube } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { Menu, X, ShoppingCart, Facebook, Instagram, Youtube } from 'lucide-react';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showAuthModal, setShowAuthModal] = useState(false);
-  const [isLogin, setIsLogin] = useState(true);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState(null);
-
-  React.useEffect(() => {
-    // Check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-    });
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setUser(session?.user ?? null);
-      }
-    );
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const handleAuth = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        if (error) throw error;
-      } else {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-        });
-        if (error) throw error;
-        alert('Check your email for the confirmation link!');
-      }
-      setShowAuthModal(false);
-      setEmail('');
-      setPassword('');
-    } catch (error: any) {
-      alert(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-  };
 
   return (
     <>
@@ -139,24 +83,6 @@ export default function Header() {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            {user ? (
-              <div className="flex items-center space-x-4">
-                <span className="text-stone-700 font-body">Welcome, {user.email}</span>
-                <button
-                  onClick={handleSignOut}
-                  className="text-stone-700 hover:text-sage-600 transition-colors"
-                >
-                  <LogOut className="h-5 w-5" />
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={() => setShowAuthModal(true)}
-                className="bg-sage-600 text-white px-4 py-2 rounded-lg font-body font-medium hover:bg-sage-700 transition-colors"
-              >
-                Sign In
-              </button>
-            )}
             <button className="text-stone-700 hover:text-sage-600 transition-colors relative">
               <ShoppingCart className="h-5 w-5" />
               <span className="absolute -top-2 -right-2 bg-sage-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">2</span>
@@ -185,30 +111,7 @@ export default function Header() {
               <a href="#plans" className="block px-3 py-2 text-stone-700 hover:text-sage-600 transition-colors">Subscription</a>
               <a href="#lms" className="block px-3 py-2 text-stone-700 hover:text-sage-600 transition-colors">Yogi Progress</a>
               <a href="#shop" className="block px-3 py-2 text-gray-400 cursor-not-allowed">Shop (Coming Soon)</a>
-              
-              {/* Mobile Auth */}
-              <div className="border-t border-gray-200 pt-4 mt-4">
-                {user ? (
-                  <div className="px-3 py-2">
-                    <p className="text-sm font-body text-stone-600 mb-2">Welcome, {user.email}</p>
-                    <button
-                      onClick={handleSignOut}
-                      className="text-stone-700 hover:text-sage-600 transition-colors flex items-center space-x-2"
-                    >
-                      <LogOut className="h-4 w-4" />
-                      <span>Sign Out</span>
-                    </button>
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => setShowAuthModal(true)}
-                    className="block w-full text-left px-3 py-2 bg-sage-600 text-white rounded-lg font-body font-medium hover:bg-sage-700 transition-colors"
-                  >
-                    Sign In
-                  </button>
-                )}
-              </div>
-              
+
               {/* Mobile Social Icons */}
               <div className="border-t border-gray-200 pt-4 mt-4">
                 <p className="px-3 py-2 text-sm font-medium text-stone-600">Follow Us</p>
@@ -260,67 +163,6 @@ export default function Header() {
         )}
       </div>
     </header>
-
-    {/* Auth Modal */}
-    {showAuthModal && (
-      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-2xl max-w-md w-full p-8">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-heading font-semibold text-stone-800">
-              {isLogin ? 'Sign In' : 'Sign Up'}
-            </h2>
-            <button
-              onClick={() => setShowAuthModal(false)}
-              className="text-stone-500 hover:text-stone-700"
-            >
-              <X className="h-6 w-6" />
-            </button>
-          </div>
-
-          <form onSubmit={handleAuth} className="space-y-4">
-            <div>
-              <label className="block text-sm font-body font-medium text-stone-700 mb-2">
-                Email
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-body font-medium text-stone-700 mb-2">
-                Password
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent"
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-sage-600 text-white py-2 px-4 rounded-lg font-body font-medium hover:bg-sage-700 transition-colors disabled:opacity-50"
-            >
-              {loading ? 'Processing...' : (isLogin ? 'Sign In' : 'Sign Up')}
-            </button>
-          </form>
-          <div className="mt-4 text-center">
-            <button
-              onClick={() => setIsLogin(!isLogin)}
-              className="text-sage-600 hover:text-sage-700 font-body"
-            >
-              {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
-            </button>
-          </div>
-        </div>
-      </div>
-    )}
     </>
   );
 }
