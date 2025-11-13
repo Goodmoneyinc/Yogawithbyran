@@ -39,14 +39,17 @@ const mockClient = {
 
 let supabase;
 
-if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('your-project')) {
+if (!supabaseUrl || !supabaseAnonKey || supabaseAnonKey === 'your-supabase-anon-key') {
   console.warn('⚠️ Supabase is not properly configured. Using mock client for development.');
   console.warn('To enable authentication, configure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in .env');
+  console.warn(`Current URL: ${supabaseUrl}`);
+  console.warn(`Current Key: ${supabaseAnonKey ? 'Set' : 'Not set'}`);
 
   // @ts-ignore - Mock client for development
   supabase = mockClient;
 } else {
   try {
+    console.log('✅ Initializing Supabase client with URL:', supabaseUrl);
     supabase = createClient(supabaseUrl, supabaseAnonKey, {
       auth: {
         persistSession: true,
