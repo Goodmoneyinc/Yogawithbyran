@@ -56,7 +56,6 @@ Deno.serve(async (req) => {
       mode: 'subscription',
       success_url,
       cancel_url,
-      customer_creation: 'always',
     });
 
     console.log(`Created checkout session ${session.id}`);
