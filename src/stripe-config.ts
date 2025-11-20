@@ -3,7 +3,7 @@ export interface Product {
   priceId: string;
   name: string;
   description: string;
-  price: number;
+  price: string;
   currency: string;
   mode: 'payment' | 'subscription';
 }
@@ -14,7 +14,7 @@ export const products: Product[] = [
     priceId: 'price_1S7kjI9wDfAiVIZSGdd7hPVG',
     name: 'YOGI avd',
     description: 'Advanced yoga subscription with premium features',
-    price: 190.00,
+    price: '190',
     currency: 'usd',
     mode: 'subscription'
   },
@@ -23,7 +23,7 @@ export const products: Product[] = [
     priceId: 'price_1S7kim9wDfAiVIZSQYhypnfc',
     name: 'Yogi Pre',
     description: 'Premium yoga subscription for dedicated practitioners',
-    price: 99.00,
+    price: '99',
     currency: 'usd',
     mode: 'subscription'
   },
@@ -32,7 +32,7 @@ export const products: Product[] = [
     priceId: 'price_1S7khi9wDfAiVIZSc1j1C58H',
     name: 'Basic Yogi',
     description: 'Essential yoga subscription for beginners',
-    price: 20.00,
+    price: '20',
     currency: 'usd',
     mode: 'subscription'
   }

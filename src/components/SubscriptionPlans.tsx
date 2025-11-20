@@ -35,37 +35,28 @@ export default function SubscriptionPlans() {
 
   const handleSubscribe = async (priceId: string, planName: string) => {
     setLoadingPlan(priceId);
-    
-    try {
-      // Check if user is authenticated
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (!session) {
-        alert('Please sign up or sign in to subscribe to a plan.');
-        setLoadingPlan(null);
-        return;
-      }
 
-      // Call the Supabase edge function to create checkout session
-      const { data, error } = await supabase.functions.invoke('create-checkout', {
-        body: {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/stripe-checkout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           price_id: priceId,
           success_url: `${window.location.origin}/success`,
           cancel_url: window.location.href,
-          mode: 'subscription'
-        },
-        headers: {
-          Authorization: `Bearer ${session.access_token}`
-        }
+        }),
       });
 
-      if (error) {
-        console.error('Error creating checkout session:', error);
-        throw new Error('Failed to create checkout session');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to create checkout session');
       }
 
+      const data = await response.json();
+
       if (data?.url) {
-        // Redirect to Stripe checkout
         window.location.href = data.url;
       } else {
         throw new Error('No checkout URL returned');
@@ -129,11 +120,10 @@ export default function SubscriptionPlans() {
                 
                 <div className="mb-8 text-center">
                   <span className="text-4xl font-heading font-semibold text-stone-800">
-                    {product.price}
+                    ${product.price}
                   </span>
                   <span className="font-body text-stone-600 ml-2 text-lg">
-                    {products.findIndex(p => p.priceId === product.priceId) === 1 ? 'for 6 months' :
-                     products.findIndex(p => p.priceId === product.priceId) === 2 ? 'per year' : 'per month'}
+                    per month
                   </span>
                 </div>
                 
