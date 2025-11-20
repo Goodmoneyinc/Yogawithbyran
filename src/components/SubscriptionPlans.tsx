@@ -37,6 +37,8 @@ export default function SubscriptionPlans() {
     setLoadingPlan(priceId);
 
     try {
+      console.log('Creating checkout session for price:', priceId);
+
       const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/stripe-checkout`, {
         method: 'POST',
         headers: {
@@ -49,21 +51,27 @@ export default function SubscriptionPlans() {
         }),
       });
 
+      console.log('Response status:', response.status);
+
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        console.error('Checkout error:', errorData);
         throw new Error(errorData.error || 'Failed to create checkout session');
       }
 
       const data = await response.json();
+      console.log('Checkout session created:', data);
 
       if (data?.url) {
+        console.log('Redirecting to Stripe checkout...');
         window.location.href = data.url;
       } else {
         throw new Error('No checkout URL returned');
       }
     } catch (error) {
       console.error('Error creating checkout session:', error);
-      alert('Unable to process checkout at this time. Please try again later.');
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      alert(`Unable to process checkout: ${errorMessage}\n\nPlease check the console for more details.`);
     } finally {
       setLoadingPlan(null);
     }
