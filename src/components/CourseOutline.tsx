@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Play, Clock, X, Loader2, AlertCircle } from 'lucide-react';
+import { Play, Clock, X, Loader2, AlertCircle, ExternalLink } from 'lucide-react';
 
 interface YouTubeVideo {
   title: string;
@@ -27,22 +27,26 @@ export default function CourseOutline() {
   const playlists = [
     {
       id: 'PL1Z9718vXb3jwQ0dF90z7C8mxPvf34COI',
-      name: 'Yoga for Absolute Beginners',
+      name: 'Lady Bug',
+      url: 'https://www.youtube.com/playlist?list=PL1Z9718vXb3jwQ0dF90z7C8mxPvf34COI',
       description: 'Perfect introduction to yoga with gentle poses and breathing techniques'
     },
     {
       id: 'PL1Z9718vXb3gjKyoek6imDxfuNLbM7Iw9',
-      name: 'Pre-Intermediate Flow Mastery',
+      name: 'Butterfly',
+      url: 'https://www.youtube.com/playlist?list=PL1Z9718vXb3gjKyoek6imDxfuNLbM7Iw9',
       description: 'Advance your practice with flowing sequences and deeper poses'
     },
     {
       id: 'PL1Z9718vXb3gExDD3LTeCbtZ-NPp4EPFJ',
-      name: 'Pre-Advanced Techniques',
+      name: 'Dragonfly',
+      url: 'https://www.youtube.com/playlist?list=PL1Z9718vXb3gExDD3LTeCbtZ-NPp4EPFJ',
       description: 'Bridge the gap to advanced practice with challenging poses and techniques'
     },
     {
-      id: 'PL1Z9718vXb3gFWrc2MH9-H97QC677qWyO',
-      name: 'Advanced Yoga Techniques',
+      id: 'PL1Z9718vXb3goDf-nX-ds4Ke3IQHS5rEW',
+      name: 'Humming Bird',
+      url: 'https://www.youtube.com/playlist?list=PL1Z9718vXb3goDf-nX-ds4Ke3IQHS5rEW',
       description: 'Master challenging poses, inversions, and advanced breathing techniques'
     }
   ];
@@ -173,10 +177,23 @@ export default function CourseOutline() {
             <p className="font-body text-stone-600 mb-4">
               {playlists.find(p => p.id === playlistId)?.description || 'Custom yoga course playlist'}
             </p>
-            <div className="bg-sage-50 rounded-lg p-4 inline-block">
-              <span className="font-body font-medium text-sage-800">
-                {videos.length} lessons available
-              </span>
+            <div className="flex flex-col items-center gap-3">
+              <div className="bg-sage-50 rounded-lg p-4 inline-block">
+                <span className="font-body font-medium text-sage-800">
+                  {videos.length} lessons available
+                </span>
+              </div>
+              {playlists.find(p => p.id === playlistId)?.url && (
+                <a
+                  href={playlists.find(p => p.id === playlistId)?.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-sage-600 text-sage-700 rounded-lg hover:bg-sage-50 transition-colors font-body font-medium"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                  View Full Playlist on YouTube
+                </a>
+              )}
             </div>
           </div>
         )}
