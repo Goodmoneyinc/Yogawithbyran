@@ -161,7 +161,7 @@ export default function SubscriptionPlans() {
                       <Loader2 className="h-5 w-5 animate-spin" />
                       <span>Processing...</span>
                     </div>
-                  ) : `Subscribe to ${product.name}`}
+                  ) : 'Subscribe'}
                 </button>
               </div>
             </div>
