@@ -89,7 +89,7 @@ export default function SubscriptionPlans() {
         <div className="text-center mb-16">
           <h2 className="text-4xl font-heading font-medium text-stone-800 mb-4">Choose Your Journey</h2>
           <p className="text-xl font-body font-light text-stone-600 max-w-3xl mx-auto">
-            Select the perfect subscription plan for your yoga practice. All plans include access to courses 
+            Select the perfect plan for your yoga practice. All plans include access to courses
             and exclusive member benefits.
           </p>
         </div>
@@ -120,7 +120,7 @@ export default function SubscriptionPlans() {
               
               <div className={`p-8 ${popular ? 'pt-16' : ''}`}>
                 <h3 className="text-2xl font-heading font-medium text-stone-800 mb-2 text-center">
-                  {product.name}
+                  Basic Yoga
                 </h3>
                 <p className="font-body text-stone-600 mb-6 text-center text-sm">
                   {product.description}
@@ -148,7 +148,7 @@ export default function SubscriptionPlans() {
                   ))}
                 </ul>
                 
-                <button 
+                <button
                   onClick={() => handleSubscribe(product.priceId, product.name)}
                   disabled={isLoading}
                   className={`w-full py-4 px-6 rounded-lg font-body font-medium text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none ${
