@@ -1,21 +1,22 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Header from './components/Header';
 import Hero from './components/Hero';
-import { Pricing } from './pages/Pricing';
-import { Success } from './pages/Success';
-import { Dashboard } from './pages/Dashboard';
 import OnlineCourses from './components/OnlineCourses';
 import LiveVideos from './components/LiveVideos';
 import SubscriptionPlans from './components/SubscriptionPlans';
 import PhotoCollage from './components/PhotoCollage';
 import Footer from './components/Footer';
-import Header from './components/Header';
-import { Auth } from './pages/Auth';
-import { Dashboard } from './pages/Dashboard';
-import { ResetPassword } from './pages/ResetPassword';
-import SuccessPage from './components/SuccessPage';
+import LMSNavigation from './components/LMS/LMSNavigation';
 
-function HomePage() {
+function App() {
+  // For demo purposes, you can toggle between the main site and LMS
+  // In a real implementation, this would be handled by routing
+  const showLMS = window.location.hash === '#lms';
+
+  if (showLMS) {
+    return <LMSNavigation />;
+  }
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -26,23 +27,6 @@ function HomePage() {
       <PhotoCollage />
       <Footer />
     </div>
-  );
-}
-
-function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/pricing" element={<Pricing />} />
-        <Route path="/success" element={<Success />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/auth" element={<Auth />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/success" element={<SuccessPage />} />
-      </Routes>
-    </Router>
   );
 }
 

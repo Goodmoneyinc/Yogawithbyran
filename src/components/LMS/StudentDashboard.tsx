@@ -31,7 +31,7 @@ const enrolledCourses: Course[] = [
     completedLessons: 9,
     nextLesson: 'Standing Balance Poses',
     image: '/images/IMG_0633(1).jpg',
-    instructor: 'bw',
+    instructor: 'Bryan Weems',
     duration: '4 weeks'
   },
   {
@@ -42,7 +42,7 @@ const enrolledCourses: Course[] = [
     completedLessons: 5,
     nextLesson: 'Sun Salutation Variations',
     image: '/images/IMG_0633(3).jpg',
-    instructor: 'bw',
+    instructor: 'Bryan Weems',
     duration: '6 weeks'
   },
   {
@@ -53,7 +53,7 @@ const enrolledCourses: Course[] = [
     completedLessons: 10,
     nextLesson: 'Course Completed!',
     image: 'https://images.pexels.com/photos/3822501/pexels-photo-3822501.jpeg?auto=compress&cs=tinysrgb&w=400',
-    instructor: 'bw',
+    instructor: 'Bryan Weems',
     duration: '5 weeks'
   }
 ];

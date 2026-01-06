@@ -16,6 +16,19 @@ const liveVideos = [
   },
   {
     id: 2,
+    title: "Evening Restorative Practice",
+    description: "Wind down with gentle poses and deep breathing to prepare for restful sleep.",
+    youtubeId: "dQw4w9WgXcQ", // Replace with actual YouTube video IDs
+    thumbnail: "https://images.pexels.com/photos/3822501/pexels-photo-3822501.jpeg?auto=compress&cs=tinysrgb&w=600",
+    duration: "30 min",
+    level: "Beginner",
+    date: "Today, 7:00 PM",
+    viewers: "156 registered",
+    isLive: false,
+    isUpcoming: true
+  },
+  {
+    id: 3,
     title: "Power Yoga Challenge",
     description: "High-intensity yoga flow to build strength and endurance. Bring your water!",
     youtubeId: "dQw4w9WgXcQ", // Replace with actual YouTube video IDs
@@ -25,9 +38,10 @@ const liveVideos = [
     date: "Yesterday",
     viewers: "1.2K views",
     isLive: false,
+    isUpcoming: false
   },
   {
-    id: 3,
+    id: 4,
     title: "Prenatal Yoga & Meditation",
     description: "Gentle movements and breathing techniques designed specifically for expecting mothers.",
     youtubeId: "dQw4w9WgXcQ", // Replace with actual YouTube video IDs
@@ -37,9 +51,10 @@ const liveVideos = [
     date: "2 days ago",
     viewers: "892 views",
     isLive: false,
+    isUpcoming: false
   },
   {
-    id: 4,
+    id: 5,
     title: "Beginner's Fundamentals",
     description: "Learn the basics of yoga with proper alignment and breathing techniques.",
     youtubeId: "dQw4w9WgXcQ", // Replace with actual YouTube video IDs
@@ -49,9 +64,10 @@ const liveVideos = [
     date: "3 days ago",
     viewers: "2.1K views",
     isLive: false,
+    isUpcoming: false
   },
   {
-    id: 5,
+    id: 6,
     title: "Weekend Warrior Flow",
     description: "Energizing weekend practice to boost your mood and prepare for the week ahead.",
     youtubeId: "dQw4w9WgXcQ", // Replace with actual YouTube video IDs
@@ -61,6 +77,7 @@ const liveVideos = [
     date: "1 week ago",
     viewers: "3.4K views",
     isLive: false,
+    isUpcoming: false
   }
 ];
 
@@ -92,13 +109,18 @@ export default function LiveVideos() {
 
         {/* Live/Upcoming Videos Section */}
         <div className="mb-12">
-          <h3 className="text-2xl font-heading font-medium text-stone-800 mb-6">Live Now</h3>
+          <h3 className="text-2xl font-heading font-medium text-stone-800 mb-6">Live & Upcoming</h3>
           <div className="grid md:grid-cols-2 gap-6">
-            {liveVideos.filter(video => video.isLive).map((video) => (
+            {liveVideos.filter(video => video.isLive || video.isUpcoming).map((video) => (
               <div key={video.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow group relative">
                 {video.isLive && (
                   <div className="absolute top-4 left-4 z-10 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-medium animate-pulse">
                     🔴 LIVE
+                  </div>
+                )}
+                {video.isUpcoming && (
+                  <div className="absolute top-4 left-4 z-10 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
+                    📅 UPCOMING
                   </div>
                 )}
                 
@@ -147,14 +169,13 @@ export default function LiveVideos() {
                     className="w-full mt-4 bg-sage-600 text-white px-6 py-3 rounded-lg font-body font-medium hover:bg-sage-700 transition-colors flex items-center justify-center space-x-2"
                   >
                     <ExternalLink className="h-4 w-4" />
-                    <span>Join Live</span>
+                    <span>{video.isLive ? 'Join Live' : 'Set Reminder'}</span>
                   </button>
                 </div>
               </div>
             ))}
           </div>
         </div>
-
 
 
         {/* YouTube Channel Link */}

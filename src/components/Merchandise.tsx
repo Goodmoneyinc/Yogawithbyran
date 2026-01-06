@@ -32,7 +32,7 @@ const products = [
   },
   {
     id: 4,
-    name: "Yoga with bw T-Shirt",
+    name: "Yoga with Bryan T-Shirt",
     price: "$20",
     rating: 4.9,
     reviews: 312,
