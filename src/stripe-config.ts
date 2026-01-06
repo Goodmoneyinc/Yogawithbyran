@@ -1,43 +1,46 @@
-export interface Product {
+export interface StripeProduct {
   id: string;
   priceId: string;
   name: string;
   description: string;
-  price: string;
+  price: number;
   currency: string;
-  mode: 'payment' | 'subscription';
+  mode: 'subscription' | 'payment';
 }
 
-export const products: Product[] = [
+export const stripeProducts: StripeProduct[] = [
   {
     id: 'prod_T3sUwOsOgCrAa1',
     priceId: 'price_1S7kjI9wDfAiVIZSGdd7hPVG',
-    name: 'Advanced Yoga',
-    description: 'Advanced yoga subscription with premium features - Billed annually',
-    price: '190',
+    name: 'YOGI avd',
+    description: 'Advanced yoga practice with premium features and personalized guidance',
+    price: 190.00,
     currency: 'usd',
     mode: 'subscription'
   },
   {
     id: 'prod_T3sTUFbZg5RkQW',
     priceId: 'price_1S7kim9wDfAiVIZSQYhypnfc',
-    name: 'Premium Yoga',
-    description: 'Premium yoga subscription for dedicated practitioners - Billed every 6 months',
-    price: '99',
+    name: 'Yogi Pre',
+    description: 'Intermediate yoga program with enhanced features and community access',
+    price: 99.00,
     currency: 'usd',
     mode: 'subscription'
   },
   {
     id: 'prod_T3sSXtlhA74UG3',
     priceId: 'price_1S7khi9wDfAiVIZSc1j1C58H',
-    name: 'Basic Yoga',
-    description: 'Essential yoga subscription for beginners',
-    price: '20',
+    name: 'Basic Yogi',
+    description: 'Essential yoga practice with fundamental poses and breathing techniques',
+    price: 20.00,
     currency: 'usd',
     mode: 'subscription'
   }
 ];
 
-export function getProductByPriceId(priceId: string): Product | undefined {
-  return products.find(product => product.priceId === priceId);
-}
+export const formatPrice = (price: number, currency: string = 'usd'): string => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: currency.toUpperCase(),
+  }).format(price);
+};

@@ -1,6 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Hero from './components/Hero';
+import { Pricing } from './pages/Pricing';
+import { Success } from './pages/Success';
+import { Dashboard } from './pages/Dashboard';
 import OnlineCourses from './components/OnlineCourses';
 import LiveVideos from './components/LiveVideos';
 import SubscriptionPlans from './components/SubscriptionPlans';
@@ -31,6 +34,9 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/pricing" element={<Pricing />} />
+        <Route path="/success" element={<Success />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/reset-password" element={<ResetPassword />} />
