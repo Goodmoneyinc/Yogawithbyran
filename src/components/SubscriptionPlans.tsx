@@ -1,7 +1,7 @@
 import React from 'react';
 import { Check, Star, Crown, Calendar, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { products } from '../stripe-config';
+import { stripeProducts } from '../stripe-config';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../hooks/useAuth';
 
@@ -112,7 +112,7 @@ export default function SubscriptionPlans() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {products.map((product) => {
+          {stripeProducts.map((product) => {
             const popular = isPopular(product);
             const features = getFeatures(product.name);
             const isLoading = loadingPlan === product.priceId;
