@@ -1,5 +1,12 @@
 import React from 'react';
 import Header from './components/Header';
+import { Header } from './components/Header';
+import { Home } from './pages/Home';
+import { Pricing } from './pages/Pricing';
+import { Success } from './pages/Success';
+import { Login } from './pages/Login';
+import { Signup } from './pages/Signup';
+import { Dashboard } from './pages/Dashboard';
 import Hero from './components/Hero';
 import OnlineCourses from './components/OnlineCourses';
 import LiveVideos from './components/LiveVideos';
@@ -34,9 +41,19 @@ function App() {
       <OnlineCourses />
       <LiveVideos />
       <SubscriptionPlans />
-      <PhotoCollage />
-      <Footer />
-    </div>
+    <Router>
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/success" element={<Success />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
