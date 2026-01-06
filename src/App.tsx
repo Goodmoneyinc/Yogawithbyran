@@ -8,7 +8,9 @@ import PhotoCollage from './components/PhotoCollage';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import { Auth } from './pages/Auth';
+import { Dashboard } from './pages/Dashboard';
 import { ResetPassword } from './pages/ResetPassword';
+import SuccessPage from './components/SuccessPage';
 
 function HomePage() {
   return (
@@ -30,7 +32,9 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/auth" element={<Auth />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/success" element={<SuccessPage />} />
       </Routes>
     </Router>
   );
