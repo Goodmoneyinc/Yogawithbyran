@@ -12,8 +12,13 @@ import SubscriptionPlans from './components/SubscriptionPlans';
 import PhotoCollage from './components/PhotoCollage';
 import Footer from './components/Footer';
 import LMSNavigation from './components/LMS/LMSNavigation';
-import CourseOutline from './components/CourseOutline';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import SuccessPage from './components/SuccessPage';
+import { Auth } from './pages/Auth';
+import { Dashboard } from './pages/Dashboard';
+import { Pricing } from './pages/Pricing';
+import { Success } from './pages/Success';
+import { Navbar } from './components/Navbar';
 
 function App() {
   const currentPath = window.location.pathname;
@@ -40,6 +45,7 @@ function App() {
       <LiveVideos />
       <SubscriptionPlans />
     <Router>
+      <Navbar user={user} />
       <div className="min-h-screen bg-gray-50">
         <Navigation />
         <Routes>
@@ -48,7 +54,14 @@ function App() {
           <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/success" element={<Success />} />
-        </Routes>
+        <Route path="/" element={<Navigate to="/pricing" replace />} />
+        <Route path="/auth" element={<Auth />} />
+        <Route path="/pricing" element={<Pricing />} />
+        <Route path="/success" element={<Success />} />
+        <Route 
+          path="/dashboard" 
+          element={user ? <Dashboard /> : <Navigate to="/auth" replace />} 
+        />
       </div>
     </Router>
   );

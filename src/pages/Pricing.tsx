@@ -29,15 +29,13 @@ export const Pricing: React.FC = () => {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to create checkout session');
-      }
-
       const { url } = await response.json();
-      window.location.href = url;
+      
+      if (url) {
+        window.location.href = url;
+      }
     } catch (error) {
       console.error('Error creating checkout session:', error);
-      alert('Failed to start checkout process. Please try again.');
     }
   };
 
@@ -49,7 +47,8 @@ export const Pricing: React.FC = () => {
             Choose Your Yoga Journey
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Select the perfect plan to enhance your practice and achieve your wellness goals
+            Transform your practice with our comprehensive yoga programs. 
+            Start with basics or dive into advanced techniques.
           </p>
         </div>
 
@@ -64,13 +63,15 @@ export const Pricing: React.FC = () => {
           ))}
         </div>
 
-        <div className="text-center mt-12">
+        <div className="mt-16 text-center">
           <p className="text-gray-600 mb-4">
             All plans include a 7-day free trial. Cancel anytime.
           </p>
-          <p className="text-sm text-gray-500">
-            Secure payments powered by Stripe. Your payment information is encrypted and secure.
-          </p>
+          <div className="flex justify-center space-x-8 text-sm text-gray-500">
+            <span>✓ Secure payments with Stripe</span>
+            <span>✓ No setup fees</span>
+            <span>✓ Cancel anytime</span>
+          </div>
         </div>
       </div>
     </div>

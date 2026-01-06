@@ -31,16 +31,12 @@ export const stripeProducts: StripeProduct[] = [
     id: 'prod_T3sSXtlhA74UG3',
     priceId: 'price_1S7khi9wDfAiVIZSc1j1C58H',
     name: 'Basic Yogi',
-    description: 'Essential yoga practice with fundamental poses and breathing exercises',
+    description: 'Essential yoga practice with fundamental poses and breathing techniques',
     price: 20.00,
     currency: 'usd',
     mode: 'subscription'
   }
 ];
-
-export const getProductByPriceId = (priceId: string): StripeProduct | undefined => {
-  return stripeProducts.find(product => product.priceId === priceId);
-};
 
 export const formatPrice = (price: number, currency: string = 'usd'): string => {
   return new Intl.NumberFormat('en-US', {
