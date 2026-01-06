@@ -6,6 +6,8 @@
  
  export const Home: React.FC = () => {
    return (
+   )
+ }
 @@ .. @@
            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
              Transform your mind, body, and spirit with our comprehensive yoga platform designed for practitioners of all levels.
