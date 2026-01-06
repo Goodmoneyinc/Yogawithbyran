@@ -1,10 +1,11 @@
 import React from 'react';
-import { Clock, Users, Star, Play } from 'lucide-react';
+import { Clock, Users, Star, Play, Loader2 } from 'lucide-react';
 
 const courses = [
   {
     id: 1,
-    title: "Yoga for Absolute Beginners",
+    title: "Beginner 1",
+    priceId: "price_1S7khi9wDfAiVIZSc1j1C58H",
     level: "Beginner",
     duration: "4 weeks",
     students: "2,340",
@@ -14,46 +15,53 @@ const courses = [
     
     description: "Perfect introduction to yoga with gentle poses and breathing techniques.",
     lessons: 4,
-    videoDuration: "15-30 min"
+    videoDuration: "15-30 min",
+    instructor: "bw"
   },
   {
     id: 2,
-    title: "Pre-Intermediate Flow Mastery",
-    level: "Intermediate",
+    title: "Beginner 2",
+    priceId: "price_1S7kim9wDfAiVIZSQYhypnfc",
+    level: "Beginner",
     duration: "6 weeks",
     students: "1,890",
     rating: 4.8,
     price: "$20",
     image: "/images/IMG_0633(3).jpg",
-    description: "Advance your practice with flowing sequences and deeper poses.",
+    description: "Continue building your foundation with flowing sequences and deeper poses.",
     lessons: 4,
-    videoDuration: "15-30 min"
+    videoDuration: "15-30 min",
+    instructor: "bw"
   },
   {
     id: 3,
-    title: "Advanced Yoga Techniques",
-    level: "Advanced",
+    title: "Beginner 3",
+    priceId: "price_1S7kim9wDfAiVIZSQYhypnfc",
+    level: "Beginner",
+    duration: "7 weeks",
+    students: "1,156",
+    rating: 4.9,
+    price: "$20",
+    image: "/images/IMG_0633(4).jpg",
+    description: "Develop strength and flexibility with more challenging beginner poses and techniques.",
+    lessons: 4,
+    videoDuration: "15-30 min",
+    instructor: "bw"
+  },
+  {
+    id: 4,
+    title: "Beginner 4",
+    priceId: "price_1S7kjI9wDfAiVIZSGdd7hPVG",
+    level: "Beginner",
     duration: "8 weeks",
     students: "956",
     rating: 4.9,
     price: "$20",
     image: "/images/IMG_0633(2).jpg",
-    description: "Master challenging poses, inversions, and advanced breathing.",
+    description: "Complete your beginner journey with confidence-building poses and breathing techniques.",
     lessons: 4,
-    videoDuration: "15-30 min"
-  },
-  {
-    id: 4,
-    title: "Pre-Advanced Techniques",
-    level: "Intermediate",
-    duration: "7 weeks",
-    students: "1,156",
-    rating: 5.0,
-    price: "$20",
-    image: "/images/IMG_0633(4).jpg",
-    description: "Bridge the gap to advanced practice with challenging poses and techniques.",
-    lessons: 4,
-    videoDuration: "15-30 min"
+    videoDuration: "15-30 min",
+    instructor: "bw"
   },
 ];
 
@@ -65,6 +73,45 @@ const levelColors = {
 };
 
 export default function OnlineCourses() {
+  const [loadingCourse, setLoadingCourse] = React.useState<number | null>(null);
+
+  const handleEnroll = async (courseId: number, priceId: string, courseName: string) => {
+    setLoadingCourse(courseId);
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/stripe-checkout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          price_id: priceId,
+          success_url: `${window.location.origin}/success`,
+          cancel_url: window.location.href,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        throw new Error(errorData.error || 'Failed to create checkout session');
+      }
+
+      const data = await response.json();
+
+      if (data?.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error('No checkout URL returned');
+      }
+    } catch (error) {
+      console.error('Error creating checkout session:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      alert(`Unable to process checkout: ${errorMessage}`);
+    } finally {
+      setLoadingCourse(null);
+    }
+  };
+
   return (
     <section id="courses" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -77,7 +124,10 @@ export default function OnlineCourses() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {courses.map((course) => (
+          {courses.map((course) => {
+            const isLoading = loadingCourse === course.id;
+            
+            return (
             <div key={course.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow group">
               <div className="relative">
                 <img
@@ -126,13 +176,25 @@ export default function OnlineCourses() {
                     </div>
                     <span className="text-2xl font-heading font-semibold text-sage-700">{course.price}</span>
                   </div>
-                  <button className="bg-sage-600 text-white px-6 py-2 rounded-lg font-body font-medium hover:bg-sage-700 transition-colors">
-                    Enroll Now
+                  <button
+                    onClick={() => handleEnroll(course.id, course.priceId, course.title)}
+                    disabled={isLoading}
+                    className="bg-sage-600 text-white px-6 py-2 rounded-lg font-body font-medium hover:bg-sage-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isLoading ? (
+                      <div className="flex items-center space-x-2">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span>Loading...</span>
+                      </div>
+                    ) : (
+                      <span>View Course</span>
+                    )}
                   </button>
                 </div>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

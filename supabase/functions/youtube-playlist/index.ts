@@ -14,7 +14,13 @@ interface YouTubePlaylistResponse {
       description: string;
       publishedAt: string;
       thumbnails: {
-        medium: {
+        default?: {
+          url: string;
+        };
+        medium?: {
+          url: string;
+        };
+        high?: {
           url: string;
         };
       };
@@ -84,10 +90,9 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    // Fetch all videos from the playlist (handle pagination)
     const allVideos: YouTubeVideo[] = [];
     let nextPageToken = "";
-    const maxResults = 50; // YouTube API max per request
+    const maxResults = 50;
 
     do {
       const apiUrl = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&key=${youtubeApiKey}&maxResults=${maxResults}${nextPageToken ? `&pageToken=${nextPageToken}` : ''}`;
@@ -113,15 +118,16 @@ Deno.serve(async (req: Request) => {
 
       const data: YouTubePlaylistResponse = await response.json();
 
-      // Transform the data to our desired format
-      const videos: YouTubeVideo[] = data.items.map((item) => ({
-        title: item.snippet.title,
-        description: item.snippet.description,
-        embedUrl: `https://www.youtube.com/embed/${item.snippet.resourceId.videoId}`,
-        videoId: item.snippet.resourceId.videoId,
-        publishedAt: item.snippet.publishedAt,
-        thumbnailUrl: item.snippet.thumbnails.medium.url,
-      }));
+      const videos: YouTubeVideo[] = data.items
+        .filter((item) => item.snippet.title !== 'Private video' && item.snippet.title !== 'Deleted video')
+        .map((item) => ({
+          title: item.snippet.title,
+          description: item.snippet.description,
+          embedUrl: `https://www.youtube.com/embed/${item.snippet.resourceId.videoId}`,
+          videoId: item.snippet.resourceId.videoId,
+          publishedAt: item.snippet.publishedAt,
+          thumbnailUrl: item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || '',
+        }));
 
       allVideos.push(...videos);
       nextPageToken = data.nextPageToken || "";

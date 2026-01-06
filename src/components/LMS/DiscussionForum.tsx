@@ -75,7 +75,7 @@ const sampleReplies: Reply[] = [
   {
     id: '1',
     content: 'Focus on a fixed point in front of you (drishti) and engage your core. Also, try pressing your foot firmly into your standing leg - it creates more stability!',
-    author: 'Bryan Weems',
+    author: 'bw',
     authorAvatar: '/IMG_0633.jpg',
     timestamp: '1 hour ago',
     likes: 15

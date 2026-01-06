@@ -20,7 +20,7 @@ const sampleCertificate: Certificate = {
     month: 'long', 
     day: 'numeric' 
   }),
-  instructor: 'Bryan Weems',
+  instructor: 'bw',
   certificateNumber: 'YWB-2025-001',
   hours: 20
 };
@@ -89,7 +89,7 @@ export default function CertificateGenerator() {
             <h3 className="text-2xl font-heading font-medium text-sage-700 tracking-wide">
               <span className="text-sage-800">Yoga</span>
               <span className="text-sage-600 italic mx-2 font-script">with</span>
-              <span className="text-sage-700 font-semibold">Bryan</span>
+              <span className="text-sage-700 font-semibold">bw</span>
             </h3>
           </div>
           
