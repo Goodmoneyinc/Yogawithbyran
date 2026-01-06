@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Menu, X, ShoppingCart, Facebook, Instagram, Youtube } from 'lucide-react';
+import { Menu, X, ShoppingCart, Facebook, Instagram, Youtube, User } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -83,9 +85,12 @@ export default function Header() {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            <button className="text-stone-700 hover:text-sage-600 transition-colors relative">
-              <ShoppingCart className="h-5 w-5" />
-              <span className="absolute -top-2 -right-2 bg-sage-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">2</span>
+            <button
+              onClick={() => navigate('/dashboard')}
+              className="flex items-center gap-2 px-4 py-2 bg-sage-600 text-white rounded-lg hover:bg-sage-700 transition-colors font-medium"
+            >
+              <User className="h-4 w-4" />
+              Member Login
             </button>
           </div>
 
@@ -154,9 +159,13 @@ export default function Header() {
               </div>
               
               <div className="border-t border-gray-200 pt-2 mt-2">
-                <p className="px-3 py-2 text-sm font-body text-stone-600">
-                  Ready to start your yoga journey?
-                </p>
+                <button
+                  onClick={() => navigate('/dashboard')}
+                  className="mx-3 w-[calc(100%-1.5rem)] flex items-center justify-center gap-2 px-4 py-2 bg-sage-600 text-white rounded-lg hover:bg-sage-700 transition-colors font-medium"
+                >
+                  <User className="h-4 w-4" />
+                  Member Login
+                </button>
               </div>
             </div>
           </div>
