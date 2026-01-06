@@ -1,7 +1,9 @@
 import React from 'react';
 import { Check, Star, Crown, Calendar, Loader2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { products } from '../stripe-config';
 import { supabase } from '../lib/supabase';
+import { useAuth } from '../hooks/useAuth';
 
 const planFeatures = {
   basic: [
@@ -32,8 +34,15 @@ const planFeatures = {
 
 export default function SubscriptionPlans() {
   const [loadingPlan, setLoadingPlan] = React.useState<string | null>(null);
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubscribe = async (priceId: string, planName: string) => {
+    if (!user) {
+      navigate('/auth?redirect=/');
+      return;
+    }
+
     setLoadingPlan(priceId);
 
     try {
@@ -46,6 +55,8 @@ export default function SubscriptionPlans() {
         },
         body: JSON.stringify({
           price_id: priceId,
+          user_id: user.id,
+          user_email: user.email,
           success_url: `${window.location.origin}/success`,
           cancel_url: window.location.href,
         }),

@@ -86,10 +86,10 @@ export default function SuccessPage() {
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="/#courses"
+              href="/dashboard"
               className="inline-flex items-center justify-center space-x-2 bg-sage-600 text-white px-8 py-3 rounded-lg font-body font-medium hover:bg-sage-700 transition-colors"
             >
-              <span>Start Learning</span>
+              <span>Go to Dashboard</span>
               <ArrowRight className="h-5 w-5" />
             </a>
             <a

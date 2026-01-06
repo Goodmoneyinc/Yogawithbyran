@@ -1,5 +1,6 @@
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
 import Stripe from 'npm:stripe@17.7.0';
+import { createClient } from 'npm:@supabase/supabase-js@2.49.1';
 
 const stripeSecret = Deno.env.get('STRIPE_SECRET_KEY')!;
 const stripe = new Stripe(stripeSecret, {
@@ -8,6 +9,11 @@ const stripe = new Stripe(stripeSecret, {
     version: '1.0.0',
   },
 });
+
+const supabase = createClient(
+  Deno.env.get('SUPABASE_URL')!,
+  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+);
 
 function corsResponse(body: string | object | null, status = 200) {
   const headers = {
@@ -39,13 +45,39 @@ Deno.serve(async (req) => {
       return corsResponse({ error: 'Method not allowed' }, 405);
     }
 
-    const { price_id, success_url, cancel_url } = await req.json();
+    const { price_id, user_id, user_email, success_url, cancel_url } = await req.json();
 
-    if (!price_id || !success_url || !cancel_url) {
+    if (!price_id || !success_url || !cancel_url || !user_id || !user_email) {
       return corsResponse({ error: 'Missing required parameters' }, 400);
     }
 
+    let customerId: string | undefined;
+
+    const { data: existingCustomer } = await supabase
+      .from('stripe_customers')
+      .select('customer_id')
+      .eq('user_id', user_id)
+      .maybeSingle();
+
+    if (existingCustomer?.customer_id) {
+      customerId = existingCustomer.customer_id;
+    } else {
+      const customer = await stripe.customers.create({
+        email: user_email,
+        metadata: {
+          user_id,
+        },
+      });
+      customerId = customer.id;
+
+      await supabase.from('stripe_customers').insert({
+        user_id,
+        customer_id: customerId,
+      });
+    }
+
     const session = await stripe.checkout.sessions.create({
+      customer: customerId,
       payment_method_types: ['card'],
       line_items: [
         {
