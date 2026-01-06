@@ -1,147 +1,121 @@
 import React, { useState } from 'react';
 import { Check, Loader2 } from 'lucide-react';
 import { StripeProduct, formatPrice } from '../stripe-config';
-import { supabase } from '../lib/supabase';
 
 interface PricingCardProps {
   product: StripeProduct;
   isPopular?: boolean;
-  currentPlan?: string;
+  onSubscribe: (priceId: string) => Promise<void>;
 }
 
 export const PricingCard: React.FC<PricingCardProps> = ({ 
   product, 
-  isPopular = false,
-  currentPlan 
+  isPopular = false, 
+  onSubscribe 
 }) => {
-  const [loading, setLoading] = useState(false);
-  const isCurrentPlan = currentPlan === product.priceId;
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubscribe = async () => {
+    setIsLoading(true);
     try {
-      setLoading(true);
-      
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        // Redirect to login
-        window.location.href = '/login';
-        return;
-      }
-
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-checkout`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          priceId: product.priceId,
-          mode: product.mode,
-          successUrl: `${window.location.origin}/success`,
-          cancelUrl: `${window.location.origin}/pricing`,
-        }),
-      });
-
-      const { url } = await response.json();
-      
-      if (url) {
-        window.location.href = url;
-      }
+      await onSubscribe(product.priceId);
     } catch (error) {
-      console.error('Error creating checkout session:', error);
+      console.error('Subscription error:', error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
-  const getFeatures = (planName: string) => {
-    switch (planName) {
-      case 'YOGI basic':
-        return [
-          'Basic yoga poses and sequences',
-          'Beginner-friendly tutorials',
-          'Weekly progress tracking',
-          'Community access',
-          'Mobile app access'
-        ];
-      case 'YOGI PRE':
-        return [
-          'Everything in Basic',
-          'Advanced pose variations',
-          'Personalized workout plans',
-          'Live monthly sessions',
-          'Priority support',
-          'Nutrition guidance'
-        ];
-      case 'YOGI ADV':
-        return [
-          'Everything in Premium',
-          'One-on-one coaching sessions',
-          'Custom meditation programs',
-          'Advanced analytics',
-          'Exclusive masterclasses',
-          'Retreat discounts',
-          'VIP community access'
-        ];
-      default:
-        return [];
-    }
-  };
+  const features = getFeaturesByPlan(product.name);
 
   return (
-    <div className={`relative bg-white rounded-2xl shadow-lg p-8 ${
-      isPopular ? 'ring-2 ring-indigo-600 scale-105' : ''
+    <div className={`relative bg-white rounded-2xl shadow-lg border-2 transition-all duration-300 hover:shadow-xl ${
+      isPopular ? 'border-indigo-500 scale-105' : 'border-gray-200'
     }`}>
       {isPopular && (
         <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-          <span className="bg-indigo-600 text-white px-4 py-2 rounded-full text-sm font-medium">
+          <span className="bg-indigo-500 text-white px-4 py-1 rounded-full text-sm font-medium">
             Most Popular
           </span>
         </div>
       )}
       
-      <div className="text-center mb-8">
+      <div className="p-8">
         <h3 className="text-2xl font-bold text-gray-900 mb-2">{product.name}</h3>
-        <p className="text-gray-600 mb-4">{product.description}</p>
-        <div className="flex items-baseline justify-center">
+        <p className="text-gray-600 mb-6">{product.description}</p>
+        
+        <div className="mb-6">
           <span className="text-4xl font-bold text-gray-900">
             {formatPrice(product.price)}
           </span>
           <span className="text-gray-600 ml-2">/month</span>
         </div>
+
+        <button
+          onClick={handleSubscribe}
+          disabled={isLoading}
+          className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center ${
+            isPopular
+              ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
+              : 'bg-gray-900 hover:bg-gray-800 text-white'
+          } disabled:opacity-50 disabled:cursor-not-allowed`}
+        >
+          {isLoading ? (
+            <>
+              <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+              Processing...
+            </>
+          ) : (
+            'Start Subscription'
+          )}
+        </button>
+
+        <div className="mt-8">
+          <h4 className="font-semibold text-gray-900 mb-4">What's included:</h4>
+          <ul className="space-y-3">
+            {features.map((feature, index) => (
+              <li key={index} className="flex items-start">
+                <Check className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                <span className="text-gray-600">{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-
-      <ul className="space-y-4 mb-8">
-        {getFeatures(product.name).map((feature, index) => (
-          <li key={index} className="flex items-start">
-            <Check className="h-5 w-5 text-green-500 mt-0.5 mr-3 flex-shrink-0" />
-            <span className="text-gray-700">{feature}</span>
-          </li>
-        ))}
-      </ul>
-
-      <button
-        onClick={handleSubscribe}
-        disabled={loading || isCurrentPlan}
-        className={`w-full py-3 px-6 rounded-lg font-medium transition-colors ${
-          isCurrentPlan
-            ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
-            : isPopular
-            ? 'bg-indigo-600 text-white hover:bg-indigo-700'
-            : 'bg-gray-900 text-white hover:bg-gray-800'
-        } ${loading ? 'opacity-75 cursor-not-allowed' : ''}`}
-      >
-        {loading ? (
-          <div className="flex items-center justify-center">
-            <Loader2 className="h-5 w-5 animate-spin mr-2" />
-            Processing...
-          </div>
-        ) : isCurrentPlan ? (
-          'Current Plan'
-        ) : (
-          'Get Started'
-        )}
-      </button>
     </div>
   );
+};
+
+const getFeaturesByPlan = (planName: string): string[] => {
+  switch (planName) {
+    case 'Basic Yogi':
+      return [
+        'Access to basic yoga poses',
+        'Breathing exercises',
+        'Weekly progress tracking',
+        'Mobile app access',
+        'Community support'
+      ];
+    case 'Yogi Pre':
+      return [
+        'Everything in Basic Yogi',
+        'Intermediate pose library',
+        'Personalized routines',
+        'Video tutorials',
+        'Monthly live sessions',
+        'Progress analytics'
+      ];
+    case 'YOGI avd':
+      return [
+        'Everything in Yogi Pre',
+        'Advanced pose sequences',
+        'One-on-one coaching',
+        'Custom meal plans',
+        'Priority support',
+        'Exclusive workshops',
+        'Advanced analytics'
+      ];
+    default:
+      return [];
+  }
 };

@@ -1,161 +1,82 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Calendar, TrendingUp, Award, Clock } from 'lucide-react';
-import { supabase, getUserSubscription, UserSubscription } from '../lib/supabase';
-import { stripeProducts, formatPrice } from '../stripe-config';
+import React from 'react';
+import { SubscriptionStatus } from '../components/SubscriptionStatus';
+import { Activity, Calendar, Target, TrendingUp } from 'lucide-react';
 
 export const Dashboard: React.FC = () => {
-  const [user, setUser] = useState<any>(null);
-  const [subscription, setSubscription] = useState<UserSubscription | null>(null);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const checkUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        navigate('/login');
-        return;
-      }
-      setUser(user);
-
-      try {
-        const userSub = await getUserSubscription();
-        setSubscription(userSub);
-      } catch (error) {
-        console.error('Error fetching subscription:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkUser();
-  }, [navigate]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-      </div>
-    );
-  }
-
-  const currentPlan = subscription 
-    ? stripeProducts.find(p => p.priceId === subscription.price_id)
-    : null;
-
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Welcome back!</h1>
-          <p className="text-gray-600 mt-2">
-            Continue your yoga journey with personalized guidance and tracking.
-          </p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
+          <p className="text-gray-600">Track your yoga journey and progress</p>
         </div>
 
-        {/* Subscription Status */}
-        <div className="bg-white rounded-lg shadow p-6 mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Subscription Status</h2>
-          {subscription && subscription.subscription_status === 'active' ? (
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-lg font-medium text-green-600">
-                  {currentPlan?.name || 'Active Plan'}
-                </p>
-                <p className="text-gray-600">
-                  {currentPlan ? formatPrice(currentPlan.price) : ''}/month
-                </p>
-                <p className="text-sm text-gray-500 mt-1">
-                  Next billing: {new Date(subscription.current_period_end * 1000).toLocaleDateString()}
-                </p>
-              </div>
-              <div className="text-right">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                  Active
-                </span>
-              </div>
-            </div>
-          ) : (
-            <div className="text-center py-8">
-              <p className="text-gray-600 mb-4">You don't have an active subscription</p>
-              <button
-                onClick={() => navigate('/pricing')}
-                className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
-              >
-                Choose a Plan
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Dashboard Stats */}
-        <div className="grid md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <Calendar className="h-8 w-8 text-indigo-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Sessions This Week</p>
-                <p className="text-2xl font-bold text-gray-900">5</p>
-              </div>
-            </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Subscription Status */}
+          <div className="lg:col-span-1">
+            <SubscriptionStatus />
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <Clock className="h-8 w-8 text-green-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Practice Time</p>
-                <p className="text-2xl font-bold text-gray-900">12h</p>
+          {/* Stats Cards */}
+          <div className="lg:col-span-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900">Sessions This Week</h3>
+                  <Activity className="w-6 h-6 text-indigo-600" />
+                </div>
+                <p className="text-3xl font-bold text-gray-900">12</p>
+                <p className="text-sm text-green-600 mt-1">+3 from last week</p>
               </div>
-            </div>
-          </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <TrendingUp className="h-8 w-8 text-blue-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Streak</p>
-                <p className="text-2xl font-bold text-gray-900">7 days</p>
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900">Total Practice Time</h3>
+                  <Calendar className="w-6 h-6 text-indigo-600" />
+                </div>
+                <p className="text-3xl font-bold text-gray-900">8.5h</p>
+                <p className="text-sm text-green-600 mt-1">+1.2h from last week</p>
               </div>
-            </div>
-          </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <Award className="h-8 w-8 text-yellow-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Achievements</p>
-                <p className="text-2xl font-bold text-gray-900">3</p>
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900">Goals Achieved</h3>
+                  <Target className="w-6 h-6 text-indigo-600" />
+                </div>
+                <p className="text-3xl font-bold text-gray-900">7/10</p>
+                <p className="text-sm text-gray-600 mt-1">This month</p>
+              </div>
+
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900">Streak</h3>
+                  <TrendingUp className="w-6 h-6 text-indigo-600" />
+                </div>
+                <p className="text-3xl font-bold text-gray-900">15 days</p>
+                <p className="text-sm text-green-600 mt-1">Personal best!</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Recent Activity */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Recent Activity</h2>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between py-3 border-b border-gray-200">
-              <div>
-                <p className="font-medium text-gray-900">Morning Flow Session</p>
-                <p className="text-sm text-gray-600">45 minutes • Beginner Level</p>
-              </div>
-              <span className="text-sm text-gray-500">2 hours ago</span>
-            </div>
-            <div className="flex items-center justify-between py-3 border-b border-gray-200">
-              <div>
-                <p className="font-medium text-gray-900">Meditation Practice</p>
-                <p className="text-sm text-gray-600">20 minutes • Mindfulness</p>
-              </div>
-              <span className="text-sm text-gray-500">Yesterday</span>
-            </div>
-            <div className="flex items-center justify-between py-3">
-              <div>
-                <p className="font-medium text-gray-900">Evening Relaxation</p>
-                <p className="text-sm text-gray-600">30 minutes • Restorative</p>
-              </div>
-              <span className="text-sm text-gray-500">2 days ago</span>
+        <div className="mt-8">
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Sessions</h3>
+            <div className="space-y-4">
+              {[
+                { name: 'Morning Flow', duration: '45 min', date: 'Today' },
+                { name: 'Evening Relaxation', duration: '30 min', date: 'Yesterday' },
+                { name: 'Power Yoga', duration: '60 min', date: '2 days ago' },
+              ].map((session, index) => (
+                <div key={index} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
+                  <div>
+                    <p className="font-medium text-gray-900">{session.name}</p>
+                    <p className="text-sm text-gray-600">{session.date}</p>
+                  </div>
+                  <span className="text-sm text-indigo-600 font-medium">{session.duration}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>

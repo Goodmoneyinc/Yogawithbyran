@@ -1,34 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { PricingCard } from '../components/PricingCard';
 import { stripeProducts } from '../stripe-config';
-import { getUserSubscription, UserSubscription } from '../lib/supabase';
+import { supabase } from '../lib/supabase';
 
 export const Pricing: React.FC = () => {
-  const [subscription, setSubscription] = useState<UserSubscription | null>(null);
-  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchSubscription = async () => {
-      try {
-        const userSub = await getUserSubscription();
-        setSubscription(userSub);
-      } catch (error) {
-        console.error('Error fetching subscription:', error);
-      } finally {
-        setLoading(false);
+  const handleSubscribe = async (priceId: string) => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        navigate('/auth');
+        return;
       }
-    };
 
-    fetchSubscription();
-  }, []);
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-checkout`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            priceId,
+            successUrl: `${window.location.origin}/success`,
+            cancelUrl: `${window.location.origin}/pricing`,
+          }),
+        }
+      );
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-      </div>
-    );
-  }
+      const { url } = await response.json();
+      
+      if (url) {
+        window.location.href = url;
+      }
+    } catch (error) {
+      console.error('Error creating checkout session:', error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
@@ -38,40 +50,29 @@ export const Pricing: React.FC = () => {
             Choose Your Yoga Journey
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Transform your practice with our comprehensive yoga programs. 
-            From beginner basics to advanced techniques, find the perfect plan for your journey.
+            Select the perfect plan to enhance your yoga practice and achieve your wellness goals
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {stripeProducts.map((product, index) => (
             <PricingCard
               key={product.id}
               product={product}
-              isPopular={index === 1} // Make YOGI PRE popular
-              currentPlan={subscription?.price_id}
+              isPopular={index === 1} // Make middle plan popular
+              onSubscribe={handleSubscribe}
             />
           ))}
         </div>
 
-        {subscription && (
-          <div className="mt-12 text-center">
-            <div className="bg-white rounded-lg shadow p-6 max-w-md mx-auto">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Current Subscription
-              </h3>
-              <p className="text-gray-600">
-                You're currently subscribed to{' '}
-                <span className="font-medium">
-                  {stripeProducts.find(p => p.priceId === subscription.price_id)?.name || 'Unknown Plan'}
-                </span>
-              </p>
-              <p className="text-sm text-gray-500 mt-2">
-                Status: <span className="capitalize">{subscription.subscription_status}</span>
-              </p>
-            </div>
-          </div>
-        )}
+        <div className="text-center mt-12">
+          <p className="text-gray-600 mb-4">
+            All plans include a 7-day free trial. Cancel anytime.
+          </p>
+          <p className="text-sm text-gray-500">
+            Secure payments powered by Stripe
+          </p>
+        </div>
       </div>
     </div>
   );

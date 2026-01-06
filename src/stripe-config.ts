@@ -1,50 +1,43 @@
-export interface StripeProduct {
+export interface Product {
   id: string;
   priceId: string;
   name: string;
   description: string;
-  price: number;
+  price: string;
   currency: string;
-  mode: 'subscription' | 'payment';
+  mode: 'payment' | 'subscription';
 }
 
-export const stripeProducts: StripeProduct[] = [
+export const products: Product[] = [
   {
-    id: 'prod_SzkHvBaBUup1gY',
-    priceId: 'price_1S3knNGHz3Ny4kcE5uwJHFPZ',
-    name: 'YOGI ADV',
-    description: 'Advanced yoga training program with personalized guidance and premium features',
-    price: 190.00,
+    id: 'prod_T3sUwOsOgCrAa1',
+    priceId: 'price_1S7kjI9wDfAiVIZSGdd7hPVG',
+    name: 'Advanced Yoga',
+    description: 'Advanced yoga subscription with premium features - Billed annually',
+    price: '190',
     currency: 'usd',
     mode: 'subscription'
   },
   {
-    id: 'prod_SzkGJAZSMNc3Qi',
-    priceId: 'price_1S3kmNGHz3Ny4kcE6vSpbRm4',
-    name: 'YOGI PRE',
-    description: 'Premium yoga experience with exclusive content and advanced techniques',
-    price: 99.00,
+    id: 'prod_T3sTUFbZg5RkQW',
+    priceId: 'price_1S7kim9wDfAiVIZSQYhypnfc',
+    name: 'Premium Yoga',
+    description: 'Premium yoga subscription for dedicated practitioners - Billed every 6 months',
+    price: '99',
     currency: 'usd',
     mode: 'subscription'
   },
   {
-    id: 'prod_SzkGjzAt3Em7Zh',
-    priceId: 'price_1S3kljGHz3Ny4kcEU2xoQ9lu',
-    name: 'YOGI basic',
-    description: 'Essential yoga fundamentals for beginners and casual practitioners',
-    price: 20.00,
+    id: 'prod_T3sSXtlhA74UG3',
+    priceId: 'price_1S7khi9wDfAiVIZSc1j1C58H',
+    name: 'Basic Yoga',
+    description: 'Essential yoga subscription for beginners',
+    price: '20',
     currency: 'usd',
     mode: 'subscription'
   }
 ];
 
-export const getProductByPriceId = (priceId: string): StripeProduct | undefined => {
-  return stripeProducts.find(product => product.priceId === priceId);
-};
-
-export const formatPrice = (price: number, currency: string = 'usd'): string => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: currency.toUpperCase(),
-  }).format(price);
-};
+export function getProductByPriceId(priceId: string): Product | undefined {
+  return products.find(product => product.priceId === priceId);
+}
