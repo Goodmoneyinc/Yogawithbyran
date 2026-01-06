@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Alert, AlertDescription, AlertIcons } from '../components/ui/alert'
 import { Button } from '../components/ui/button'
-import { CheckCircle, PlayCircle } from 'lucide-react'
+import { CheckCircle, PlayCircle, Copy, Check } from 'lucide-react'
 
 const playlists = [
   {
@@ -24,8 +24,20 @@ const playlists = [
 ]
 
 export function SuccessPage() {
+  const [copiedLink, setCopiedLink] = useState<string | null>(null)
+
   const handleContinue = () => {
     window.location.href = '/'
+  }
+
+  const copyToClipboard = async (url: string, name: string) => {
+    try {
+      await navigator.clipboard.writeText(url)
+      setCopiedLink(name)
+      setTimeout(() => setCopiedLink(null), 2000)
+    } catch (err) {
+      console.error('Failed to copy:', err)
+    }
   }
 
   return (
@@ -50,43 +62,52 @@ export function SuccessPage() {
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
                 Your Course Content
               </h3>
-              <p className="text-gray-600 text-sm mb-4">
+              <p className="text-gray-600 text-sm mb-2">
                 You now have access to all course playlists. Click any link below to start learning.
+              </p>
+              <p className="text-green-700 text-sm font-medium bg-green-50 border border-green-200 rounded-lg p-3 mb-4">
+                Please copy and save these links for future access to your courses!
               </p>
             </div>
 
             <div className="grid gap-3">
               {playlists.map((playlist) => (
-                <a
+                <div
                   key={playlist.name}
-                  href={playlist.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-lg hover:border-green-500 hover:shadow-md transition-all group"
                 >
                   <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center group-hover:bg-green-200 transition-colors">
                     <PlayCircle className="h-5 w-5 text-green-600" />
                   </div>
-                  <div className="flex-1 text-left">
+                  <a
+                    href={playlist.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 text-left"
+                  >
                     <h4 className="font-medium text-gray-900 group-hover:text-green-600 transition-colors">
                       {playlist.name}
                     </h4>
-                    <p className="text-xs text-gray-500">YouTube Playlist</p>
-                  </div>
-                  <svg
-                    className="w-5 h-5 text-gray-400 group-hover:text-green-600 transition-colors"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+                    <p className="text-xs text-gray-500 break-all">{playlist.url}</p>
+                  </a>
+                  <button
+                    onClick={() => copyToClipboard(playlist.url, playlist.name)}
+                    className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-green-600 hover:text-green-700 hover:bg-green-50 rounded transition-colors"
+                    title="Copy link"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </a>
+                    {copiedLink === playlist.name ? (
+                      <>
+                        <Check className="h-4 w-4" />
+                        <span>Copied!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="h-4 w-4" />
+                        <span>Copy</span>
+                      </>
+                    )}
+                  </button>
+                </div>
               ))}
             </div>
 
