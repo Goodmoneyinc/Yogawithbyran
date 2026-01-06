@@ -1,73 +1,45 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { getUserSubscription, UserSubscription } from '../lib/supabase';
+import { getProductByPriceId } from '../stripe-config';
+import { useAuth } from './useAuth';
 
-interface Subscription {
-  customer_id: string;
-  subscription_id: string;
-  subscription_status: string;
-  price_id: string;
-  current_period_start: number;
-  current_period_end: number;
-  cancel_at_period_end: boolean;
-  payment_method_brand: string;
-  payment_method_last4: string;
-}
-
-export const useSubscription = () => {
-  const [subscription, setSubscription] = useState<Subscription | null>(null);
+export function useSubscription() {
+  const { user } = useAuth();
+  const [subscription, setSubscription] = useState<UserSubscription | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!user) {
+      setSubscription(null);
+      setLoading(false);
+      return;
+    }
+
     const fetchSubscription = async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
-        
-        if (!user) {
-          setLoading(false);
-          return;
-        }
-
-        const { data, error } = await supabase
-          .from('stripe_user_subscriptions')
-          .select('*')
-          .single();
-
-        if (error && error.code !== 'PGRST116') { // PGRST116 is "no rows returned"
-          throw error;
-        }
-
+        const data = await getUserSubscription();
         setSubscription(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch subscription');
+      } catch (error) {
+        console.error('Error fetching subscription:', error);
+        setSubscription(null);
       } finally {
         setLoading(false);
       }
     };
 
     fetchSubscription();
-  }, []);
+  }, [user]);
 
-  const getSubscriptionPlan = () => {
-    if (!subscription?.price_id) return null;
-    
-    // Map price IDs to plan names
-    const priceIdToPlan: Record<string, string> = {
-      'price_1S7kjI9wDfAiVIZSGdd7hPVG': 'YOGI avd',
-      'price_1S7kim9wDfAiVIZSQYhypnfc': 'Yogi Pre',
-      'price_1S7khi9wDfAiVIZSc1j1C58H': 'Basic Yogi'
-    };
-    
-    return priceIdToPlan[subscription.price_id] || 'Unknown Plan';
-  };
+  const currentPlan = subscription?.price_id 
+    ? getProductByPriceId(subscription.price_id)
+    : null;
 
-  const isActive = subscription?.subscription_status === 'active';
+  const isActive = subscription?.subscription_status === 'active' || subscription?.subscription_status === 'trialing';
 
   return {
     subscription,
-    loading,
-    error,
+    currentPlan,
     isActive,
-    planName: getSubscriptionPlan()
+    loading
   };
-};
+}
