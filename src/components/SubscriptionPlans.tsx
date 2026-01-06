@@ -81,13 +81,7 @@ export default function SubscriptionPlans() {
     return planFeatures.basic;
   };
 
-  const isPopular = (product: any) => product.name === 'Premium Yoga';
-
-  const getPricePeriod = (productName: string) => {
-    if (productName === 'Advanced Yoga') return 'per year';
-    if (productName === 'Premium Yoga') return 'per 6 months';
-    return 'per month';
-  };
+  const isPopular = (product: any) => product.price === '$99';
 
   return (
     <section id="plans" className="py-20 bg-white">
@@ -126,18 +120,18 @@ export default function SubscriptionPlans() {
               
               <div className={`p-8 ${popular ? 'pt-16' : ''}`}>
                 <h3 className="text-2xl font-heading font-medium text-stone-800 mb-2 text-center">
-                  {product.name}
+                  Basic Yoga
                 </h3>
                 <p className="font-body text-stone-600 mb-6 text-center text-sm">
                   {product.description}
                 </p>
-
+                
                 <div className="mb-8 text-center">
                   <span className="text-4xl font-heading font-semibold text-stone-800">
                     ${product.price}
                   </span>
                   <span className="font-body text-stone-600 ml-2 text-lg">
-                    {getPricePeriod(product.name)}
+                    per month
                   </span>
                 </div>
                 

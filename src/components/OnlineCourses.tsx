@@ -76,40 +76,8 @@ export default function OnlineCourses() {
   const [loadingCourse, setLoadingCourse] = React.useState<number | null>(null);
 
   const handleEnroll = async (courseId: number, priceId: string, courseName: string) => {
-    setLoadingCourse(courseId);
-
-    try {
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/stripe-checkout`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          price_id: priceId,
-          success_url: `${window.location.origin}/success`,
-          cancel_url: window.location.href,
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-        throw new Error(errorData.error || 'Failed to create checkout session');
-      }
-
-      const data = await response.json();
-
-      if (data?.url) {
-        window.location.href = data.url;
-      } else {
-        throw new Error('No checkout URL returned');
-      }
-    } catch (error) {
-      console.error('Error creating checkout session:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-      alert(`Unable to process checkout: ${errorMessage}`);
-    } finally {
-      setLoadingCourse(null);
-    }
+    // Redirect to course outline for now
+    window.location.hash = '#course-outline';
   };
 
   return (
@@ -176,19 +144,11 @@ export default function OnlineCourses() {
                     </div>
                     <span className="text-2xl font-heading font-semibold text-sage-700">{course.price}</span>
                   </div>
-                  <button
+                  <button 
                     onClick={() => handleEnroll(course.id, course.priceId, course.title)}
-                    disabled={isLoading}
-                    className="bg-sage-600 text-white px-6 py-2 rounded-lg font-body font-medium hover:bg-sage-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="bg-sage-600 text-white px-6 py-2 rounded-lg font-body font-medium hover:bg-sage-700 transition-colors"
                   >
-                    {isLoading ? (
-                      <div className="flex items-center space-x-2">
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        <span>Loading...</span>
-                      </div>
-                    ) : (
-                      <span>View Course</span>
-                    )}
+                    <span>View Course</span>
                   </button>
                 </div>
               </div>

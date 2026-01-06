@@ -12,8 +12,8 @@ export const products: Product[] = [
   {
     id: 'prod_T3sUwOsOgCrAa1',
     priceId: 'price_1S7kjI9wDfAiVIZSGdd7hPVG',
-    name: 'Advanced Yoga',
-    description: 'Advanced yoga subscription with premium features - Billed annually',
+    name: 'YOGI avd',
+    description: 'Advanced yoga subscription with premium features',
     price: '190',
     currency: 'usd',
     mode: 'subscription'
@@ -21,8 +21,8 @@ export const products: Product[] = [
   {
     id: 'prod_T3sTUFbZg5RkQW',
     priceId: 'price_1S7kim9wDfAiVIZSQYhypnfc',
-    name: 'Premium Yoga',
-    description: 'Premium yoga subscription for dedicated practitioners - Billed every 6 months',
+    name: 'Yogi Pre',
+    description: 'Premium yoga subscription for dedicated practitioners',
     price: '99',
     currency: 'usd',
     mode: 'subscription'
@@ -30,7 +30,7 @@ export const products: Product[] = [
   {
     id: 'prod_T3sSXtlhA74UG3',
     priceId: 'price_1S7khi9wDfAiVIZSc1j1C58H',
-    name: 'Basic Yoga',
+    name: 'Basic Yogi',
     description: 'Essential yoga subscription for beginners',
     price: '20',
     currency: 'usd',

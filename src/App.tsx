@@ -8,7 +8,7 @@ import PhotoCollage from './components/PhotoCollage';
 import Footer from './components/Footer';
 import LMSNavigation from './components/LMS/LMSNavigation';
 import CourseOutline from './components/CourseOutline';
-import { SuccessPage } from './pages/SuccessPage';
+import SuccessPage from './components/SuccessPage';
 
 function App() {
   const currentPath = window.location.pathname;
