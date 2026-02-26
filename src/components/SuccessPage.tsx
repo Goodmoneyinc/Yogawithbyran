@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { CheckCircle, ArrowRight, Home } from 'lucide-react';
+import { CheckCircle, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function SuccessPage() {
   const [planName, setPlanName] = useState<string>('');
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Get plan name from URL params
     const urlParams = new URLSearchParams(window.location.search);
     const sessionId = urlParams.get('session_id');
-    
-    // In a real implementation, you would fetch the session details from Stripe
-    // For now, we'll show a generic success message
+
     if (sessionId) {
       setPlanName('Your Subscription');
     }
-  }, []);
+
+    const redirectTimer = setTimeout(() => {
+      navigate('/dashboard');
+    }, 5000);
+
+    return () => clearTimeout(redirectTimer);
+  }, [navigate]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-sage-50 to-stone-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -25,17 +30,20 @@ export default function SuccessPage() {
             <CheckCircle className="h-12 w-12 text-green-600" />
           </div>
 
-          {/* Success Message */}
           <h1 className="text-4xl font-heading font-semibold text-stone-800 mb-4">
-            Welcome to Your Yoga Journey!
+            Welcome to Your Training!
           </h1>
-          
+
           <p className="text-xl font-body text-stone-600 mb-8">
             {planName ? (
               <>Your subscription to <strong>{planName}</strong> has been activated successfully!</>
             ) : (
               'Your subscription has been activated successfully!'
             )}
+          </p>
+
+          <p className="text-sm text-stone-500 mb-8">
+            Redirecting to your dashboard in 5 seconds...
           </p>
 
           {/* What's Next */}
@@ -58,8 +66,8 @@ export default function SuccessPage() {
                   <span className="text-white text-sm font-bold">2</span>
                 </div>
                 <div>
-                  <h3 className="font-body font-medium text-stone-800">Join Live Sessions</h3>
-                  <p className="font-body text-sm text-stone-600">Participate in live yoga sessions and connect with our community.</p>
+                  <h3 className="font-body font-medium text-stone-800">Watch Training Videos</h3>
+                  <p className="font-body text-sm text-stone-600">Access professional training videos and master new techniques.</p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
@@ -77,7 +85,7 @@ export default function SuccessPage() {
                 </div>
                 <div>
                   <h3 className="font-body font-medium text-stone-800">Get Support</h3>
-                  <p className="font-body text-sm text-stone-600">Reach out anytime for guidance and support on your yoga journey.</p>
+                  <p className="font-body text-sm text-stone-600">Reach out anytime for guidance and support on your training journey.</p>
                 </div>
               </div>
             </div>
@@ -91,13 +99,6 @@ export default function SuccessPage() {
             >
               <span>Go to Dashboard</span>
               <ArrowRight className="h-5 w-5" />
-            </a>
-            <a
-              href="/"
-              className="inline-flex items-center justify-center space-x-2 border border-sage-600 text-sage-600 px-8 py-3 rounded-lg font-body font-medium hover:bg-sage-50 transition-colors"
-            >
-              <Home className="h-5 w-5" />
-              <span>Go to Homepage</span>
             </a>
           </div>
 

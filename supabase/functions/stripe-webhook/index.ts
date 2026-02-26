@@ -89,6 +89,7 @@ async function handleEvent(event: Stripe.Event) {
     if (isSubscription) {
       console.info(`Starting subscription sync for customer: ${customerId}`);
       await syncCustomerFromStripe(customerId);
+      await grantStudentRole(customerId);
     } else if (mode === 'payment' && payment_status === 'paid') {
       try {
         // Extract the necessary information from the session
@@ -109,18 +110,53 @@ async function handleEvent(event: Stripe.Event) {
           amount_total,
           currency,
           payment_status,
-          status: 'completed', // assuming we want to mark it as completed since payment is successful
+          status: 'completed',
         });
 
         if (orderError) {
           console.error('Error inserting order:', orderError);
           return;
         }
+
+        await grantStudentRole(customerId);
         console.info(`Successfully processed one-time payment for session: ${checkout_session_id}`);
       } catch (error) {
         console.error('Error processing one-time payment:', error);
       }
     }
+  }
+}
+
+async function grantStudentRole(customerId: string) {
+  try {
+    const { data: customerData, error: customerError } = await supabase
+      .from('stripe_customers')
+      .select('user_id')
+      .eq('customer_id', customerId)
+      .maybeSingle();
+
+    if (customerError || !customerData) {
+      console.error('Error finding user for customer:', customerError);
+      return;
+    }
+
+    const { error: roleError } = await supabase
+      .from('user_roles')
+      .upsert({
+        user_id: customerData.user_id,
+        role: 'student',
+      }, {
+        onConflict: 'user_id',
+      });
+
+    if (roleError) {
+      console.error('Error granting student role:', roleError);
+      return;
+    }
+
+    console.info(`Successfully granted student role to user: ${customerData.user_id}`);
+  } catch (error) {
+    console.error('Error in grantStudentRole:', error);
   }
 }
 
