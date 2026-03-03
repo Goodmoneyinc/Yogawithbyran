@@ -213,6 +213,19 @@ export function StudentDashboard() {
     }
   };
 
+  const handleVideoEnd = () => {
+    if (!selectedLesson) return;
+
+    const flatLessons = Object.values(modules).flat();
+    const currentIndex = flatLessons.findIndex(l => l.id === selectedLesson.id);
+
+    if (currentIndex < flatLessons.length - 1) {
+      const nextLesson = flatLessons[currentIndex + 1];
+      setSelectedLesson(nextLesson);
+      console.log(`Auto-advancing to: ${nextLesson.title}`);
+    }
+  };
+
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     navigate('/');
@@ -323,6 +336,7 @@ export function StudentDashboard() {
                 accentColor="#1c1917"
                 primaryColor="#FFFFFF"
                 streamType="on-demand"
+                onEnded={handleVideoEnd}
                 style={{ width: '100%', height: '100%' }}
               />
             </div>
