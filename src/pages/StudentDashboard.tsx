@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, CheckCircle, Circle, Settings } from 'lucide-react';
+import { LogOut, CheckCircle, Circle, Settings, Loader2 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import MuxPlayer from '@mux/mux-player-react';
 
