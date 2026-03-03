@@ -98,7 +98,7 @@ export function StudentDashboard() {
         .select('*')
         .eq('published', true)
         .order('level', { ascending: true })
-        .order('order_index', { ascending: true });
+        .order('created_at', { ascending: true });
 
       if (error) throw error;
 
