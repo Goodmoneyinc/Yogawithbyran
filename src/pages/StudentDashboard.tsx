@@ -1,30 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, CheckCircle, Circle, Settings, Loader2 } from 'lucide-react';
+import { LogOut, CheckCircle, PlayCircle, Settings, ChevronDown, ChevronUp } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import MuxPlayer from '@mux/mux-player-react';
 
-interface Module {
-  id: number;
+interface Lesson {
+  id: string;
   title: string;
   description: string | null;
+  mux_playback_id: string;
+  module_name: string;
+  level: string;
   order_index: number;
   published: boolean;
 }
 
-interface VideoItem {
-  id: number;
-  module_id: number;
-  title: string;
-  description: string | null;
-  mux_playback_id: string;
-  duration: number | null;
-  order_index: number;
+interface ModuleGroup {
+  [moduleName: string]: Lesson[];
 }
 
 interface Progress {
-  video_id: number;
+  lesson_id: string;
   completed: boolean;
   last_position: number;
   completion_percentage: number;
@@ -33,10 +30,10 @@ interface Progress {
 export function StudentDashboard() {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
-  const [modules, setModules] = useState<Module[]>([]);
-  const [videos, setVideos] = useState<{ [moduleId: number]: VideoItem[] }>({});
-  const [progress, setProgress] = useState<{ [videoId: number]: Progress }>({});
-  const [selectedVideo, setSelectedVideo] = useState<VideoItem | null>(null);
+  const [modules, setModules] = useState<ModuleGroup>({});
+  const [progress, setProgress] = useState<{ [lessonId: string]: Progress }>({});
+  const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
+  const [expandedModules, setExpandedModules] = useState<{ [moduleName: string]: boolean }>({});
   const [loading, setLoading] = useState(true);
   const [hasAccess, setHasAccess] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -50,7 +47,7 @@ export function StudentDashboard() {
   useEffect(() => {
     if (user) {
       checkAccess();
-      loadModulesAndVideos();
+      loadCurriculum();
       loadProgress();
     }
   }, [user]);
@@ -94,41 +91,31 @@ export function StudentDashboard() {
     }
   };
 
-  const loadModulesAndVideos = async () => {
+  const loadCurriculum = async () => {
     try {
-      const { data: modulesData, error: modulesError } = await supabase
-        .from('modules')
+      const { data: lessonsData, error } = await supabase
+        .from('lessons')
         .select('*')
         .eq('published', true)
+        .order('level', { ascending: true })
         .order('order_index', { ascending: true });
 
-      if (modulesError) throw modulesError;
+      if (error) throw error;
 
-      setModules(modulesData || []);
+      const grouped = (lessonsData || []).reduce((acc: ModuleGroup, lesson: Lesson) => {
+        const key = lesson.module_name || 'Introduction';
+        if (!acc[key]) acc[key] = [];
+        acc[key].push(lesson);
+        return acc;
+      }, {});
 
-      const videosByModule: { [key: number]: VideoItem[] } = {};
+      setModules(grouped);
 
-      for (const module of modulesData || []) {
-        const { data: videosData, error: videosError } = await supabase
-          .from('videos')
-          .select('*')
-          .eq('module_id', module.id)
-          .eq('published', true)
-          .order('order_index', { ascending: true });
-
-        if (videosError) throw videosError;
-
-        videosByModule[module.id] = videosData || [];
-      }
-
-      setVideos(videosByModule);
-
-      const firstModule = modulesData?.[0];
-      if (firstModule && videosByModule[firstModule.id]?.[0]) {
-        setSelectedVideo(videosByModule[firstModule.id][0]);
+      if (lessonsData && lessonsData.length > 0) {
+        setSelectedLesson(lessonsData[0]);
       }
     } catch (error) {
-      console.error('Error loading modules and videos:', error);
+      console.error('Error loading curriculum:', error);
     }
   };
 
@@ -141,9 +128,9 @@ export function StudentDashboard() {
 
       if (error) throw error;
 
-      const progressMap: { [key: number]: Progress } = {};
+      const progressMap: { [key: string]: Progress } = {};
       data?.forEach((p) => {
-        progressMap[p.video_id] = p;
+        progressMap[p.lesson_id] = p;
       });
 
       setProgress(progressMap);
@@ -152,7 +139,11 @@ export function StudentDashboard() {
     }
   };
 
-  const updateProgress = async (videoId: number, position: number, duration: number) => {
+  const toggleModule = (moduleName: string) => {
+    setExpandedModules(prev => ({ ...prev, [moduleName]: !prev[moduleName] }));
+  };
+
+  const updateProgress = async (lessonId: string, position: number, duration: number) => {
     if (!duration) return;
 
     const percentage = Math.floor((position / duration) * 100);
@@ -163,22 +154,22 @@ export function StudentDashboard() {
         .from('user_progress')
         .upsert({
           user_id: user?.id,
-          video_id: videoId,
+          lesson_id: lessonId,
           last_position: Math.floor(position),
           completion_percentage: percentage,
           completed: isCompleted,
           completed_at: isCompleted ? new Date().toISOString() : null,
           updated_at: new Date().toISOString()
         }, {
-          onConflict: 'user_id,video_id'
+          onConflict: 'user_id,lesson_id'
         });
 
       if (error) throw error;
 
       setProgress((prev) => ({
         ...prev,
-        [videoId]: {
-          video_id: videoId,
+        [lessonId]: {
+          lesson_id: lessonId,
           completed: isCompleted,
           last_position: Math.floor(position),
           completion_percentage: percentage
@@ -186,6 +177,39 @@ export function StudentDashboard() {
       }));
     } catch (error) {
       console.error('Error updating progress:', error);
+    }
+  };
+
+  const markLessonComplete = async () => {
+    if (!selectedLesson) return;
+
+    try {
+      const { error } = await supabase
+        .from('user_progress')
+        .upsert({
+          user_id: user?.id,
+          lesson_id: selectedLesson.id,
+          completed: true,
+          completion_percentage: 100,
+          completed_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        }, {
+          onConflict: 'user_id,lesson_id'
+        });
+
+      if (error) throw error;
+
+      setProgress((prev) => ({
+        ...prev,
+        [selectedLesson.id]: {
+          lesson_id: selectedLesson.id,
+          completed: true,
+          last_position: 0,
+          completion_percentage: 100
+        }
+      }));
+    } catch (error) {
+      console.error('Error marking lesson complete:', error);
     }
   };
 
@@ -222,119 +246,117 @@ export function StudentDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-50 flex flex-col">
-      <nav className="bg-white shadow-sm border-b border-stone-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <h1 className="text-2xl font-bold text-gray-900">Training Dashboard</h1>
-            <div className="flex items-center gap-4">
-              {isAdmin && (
-                <button
-                  onClick={() => navigate('/admin')}
-                  className="flex items-center gap-2 px-4 py-2 text-stone-700 hover:text-stone-900 transition"
-                >
-                  <Settings className="w-5 h-5" />
-                  Admin
-                </button>
-              )}
-              <span className="text-stone-600">{user?.email}</span>
+    <div className="flex h-screen bg-stone-50">
+      <div className="w-96 bg-white border-r border-stone-200 flex flex-col">
+        <div className="p-6 border-b border-stone-100">
+          <h2 className="text-xl font-bold text-stone-800">Your Practice</h2>
+          <p className="text-sm text-stone-500">Progress: Beginner Levels 1-4</p>
+          <div className="flex items-center gap-4 mt-4">
+            {isAdmin && (
               <button
-                onClick={handleSignOut}
-                className="flex items-center gap-2 px-4 py-2 text-stone-700 hover:text-stone-900 transition"
+                onClick={() => navigate('/admin')}
+                className="flex items-center gap-2 px-3 py-1.5 text-xs text-stone-700 hover:text-stone-900 transition border border-stone-200 rounded-lg"
               >
-                <LogOut className="w-5 h-5" />
-                Sign Out
+                <Settings className="w-4 h-4" />
+                Admin
+              </button>
+            )}
+            <button
+              onClick={handleSignOut}
+              className="flex items-center gap-2 px-3 py-1.5 text-xs text-stone-700 hover:text-stone-900 transition border border-stone-200 rounded-lg"
+            >
+              <LogOut className="w-4 h-4" />
+              Sign Out
+            </button>
+          </div>
+        </div>
+
+        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          {Object.entries(modules).map(([moduleName, lessons]) => (
+            <div key={moduleName} className="border border-stone-100 rounded-xl overflow-hidden">
+              <button
+                onClick={() => toggleModule(moduleName)}
+                className="w-full flex items-center justify-between p-4 bg-stone-50 hover:bg-stone-100 transition"
+              >
+                <span className="font-semibold text-stone-700">{moduleName}</span>
+                {expandedModules[moduleName] ? <ChevronUp size={18}/> : <ChevronDown size={18}/>}
+              </button>
+
+              {!expandedModules[moduleName] && (
+                <div className="bg-white">
+                  {lessons.map((lesson) => (
+                    <button
+                      key={lesson.id}
+                      onClick={() => setSelectedLesson(lesson)}
+                      className={`w-full flex items-center gap-3 p-4 text-left border-t border-stone-50 hover:bg-stone-50 transition ${
+                        selectedLesson?.id === lesson.id ? 'bg-stone-100 border-l-4 border-l-stone-800' : ''
+                      }`}
+                    >
+                      <PlayCircle size={18} className={selectedLesson?.id === lesson.id ? 'text-stone-800' : 'text-stone-400'} />
+                      <div className="flex-1">
+                        <p className="text-sm font-medium text-stone-800">{lesson.title}</p>
+                        {lesson.level && (
+                          <span className="text-[10px] uppercase tracking-widest text-stone-600 font-bold">
+                            Level {lesson.level}
+                          </span>
+                        )}
+                      </div>
+                      {progress[lesson.id]?.completed && (
+                        <CheckCircle size={18} className="text-green-600" />
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex-1 p-10 flex flex-col items-center">
+        {selectedLesson ? (
+          <div className="w-full max-w-5xl">
+            <div className="shadow-2xl rounded-3xl overflow-hidden bg-black aspect-video border-8 border-white">
+              <MuxPlayer
+                playbackId={selectedLesson.mux_playback_id}
+                metadata={{ video_title: selectedLesson.title }}
+                accentColor="#1c1917"
+                primaryColor="#FFFFFF"
+                streamType="on-demand"
+                style={{ width: '100%', height: '100%' }}
+              />
+            </div>
+
+            <div className="mt-8 flex justify-between items-start">
+              <div>
+                {selectedLesson.level && (
+                  <span className="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-xs font-bold uppercase tracking-tight">
+                    {selectedLesson.level} Level
+                  </span>
+                )}
+                <h1 className="text-3xl font-bold text-stone-800 mt-3">
+                  {selectedLesson.title}
+                </h1>
+                {selectedLesson.description && (
+                  <p className="text-stone-600 mt-2 max-w-2xl">{selectedLesson.description}</p>
+                )}
+              </div>
+
+              <button
+                onClick={markLessonComplete}
+                className="flex items-center gap-2 bg-stone-900 text-white px-6 py-3 rounded-full font-bold hover:bg-stone-800 transition shadow-lg"
+              >
+                <CheckCircle size={20} />
+                Mark Complete
               </button>
             </div>
           </div>
-        </div>
-      </nav>
-
-      <div className="flex-1 flex">
-        <div className="w-80 bg-white border-r border-stone-200 overflow-y-auto">
-          <div className="p-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">Course Content</h2>
-            <div className="space-y-4">
-              {modules.map((module) => (
-                <div key={module.id}>
-                  <h3 className="font-semibold text-gray-900 mb-2">{module.title}</h3>
-                  <div className="space-y-1 ml-2">
-                    {videos[module.id]?.map((video) => {
-                      const isCompleted = progress[video.id]?.completed || false;
-                      const isSelected = selectedVideo?.id === video.id;
-
-                      return (
-                        <button
-                          key={video.id}
-                          onClick={() => setSelectedVideo(video)}
-                          className={`w-full text-left px-3 py-2 rounded-lg transition flex items-start gap-2 ${
-                            isSelected
-                              ? 'bg-stone-900 text-white'
-                              : 'hover:bg-stone-100 text-stone-700'
-                          }`}
-                        >
-                          {isCompleted ? (
-                            <CheckCircle className={`w-5 h-5 flex-shrink-0 mt-0.5 ${isSelected ? 'text-green-400' : 'text-green-600'}`} />
-                          ) : (
-                            <Circle className={`w-5 h-5 flex-shrink-0 mt-0.5 ${isSelected ? 'text-white' : 'text-stone-400'}`} />
-                          )}
-                          <span className="text-sm flex-1">{video.title}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              ))}
-            </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center h-full text-stone-400">
+            <PlayCircle size={64} className="mb-4 opacity-20" />
+            <p className="text-xl">Ready to begin? Select a lesson.</p>
           </div>
-        </div>
-
-        <div className="flex-1 bg-black">
-          {selectedVideo ? (
-            <div className="h-full flex flex-col">
-              <div className="flex-1 flex items-center justify-center bg-black">
-                <MuxPlayer
-                  playbackId={selectedVideo.mux_playback_id}
-                  metadata={{
-                    video_title: selectedVideo.title
-                  }}
-                  streamType="on-demand"
-                  onTimeUpdate={(e: any) => {
-                    const target = e.target as HTMLVideoElement;
-                    if (selectedVideo.duration && target.currentTime) {
-                      updateProgress(selectedVideo.id, target.currentTime, selectedVideo.duration);
-                    }
-                  }}
-                  style={{ width: '100%', maxHeight: '100%' }}
-                />
-              </div>
-              <div className="bg-white border-t border-stone-200 p-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">{selectedVideo.title}</h2>
-                {selectedVideo.description && (
-                  <p className="text-stone-600">{selectedVideo.description}</p>
-                )}
-                {progress[selectedVideo.id] && (
-                  <div className="mt-4 flex items-center gap-2 text-sm text-stone-600">
-                    <div className="flex-1 bg-stone-200 rounded-full h-2">
-                      <div
-                        className="bg-stone-900 h-2 rounded-full transition-all"
-                        style={{ width: `${progress[selectedVideo.id].completion_percentage}%` }}
-                      />
-                    </div>
-                    <span>{progress[selectedVideo.id].completion_percentage}%</span>
-                  </div>
-                )}
-              </div>
-            </div>
-          ) : (
-            <div className="h-full flex items-center justify-center text-white">
-              <div className="text-center">
-                <h3 className="text-2xl font-bold mb-2">Select a video to start learning</h3>
-                <p className="text-stone-400">Choose from the course content on the left</p>
-              </div>
-            </div>
-          )}
-        </div>
+        )}
       </div>
     </div>
   );
