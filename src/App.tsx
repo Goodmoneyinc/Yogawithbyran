@@ -15,6 +15,7 @@ import SuccessPage from './components/SuccessPage';
 import Membership from './pages/Membership';
 import { AdminGuard } from './components/auth/AdminGuard';
 import { SubscriptionGuard } from './components/auth/SubscriptionGuard';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { useAuth } from './hooks/useAuth';
 
 function HomePage() {
@@ -47,37 +48,39 @@ function App() {
   }
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/auth" element={user ? <Navigate to={isOwner ? "/admin" : "/dashboard"} replace /> : <Auth />} />
-        <Route path="/membership" element={<Membership />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/success" element={<SuccessPage />} />
+    <ErrorBoundary>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/auth" element={user ? <Navigate to={isOwner ? "/admin" : "/dashboard"} replace /> : <Auth />} />
+          <Route path="/membership" element={<Membership />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/success" element={<SuccessPage />} />
 
-        <Route
-          path="/admin"
-          element={
-            <AdminGuard>
-              <AdminDashboard />
-            </AdminGuard>
-          }
-        />
+          <Route
+            path="/admin"
+            element={
+              <AdminGuard>
+                <AdminDashboard />
+              </AdminGuard>
+            }
+          />
 
-        <Route
-          path="/dashboard"
-          element={
-            isOwner ? (
-              <Navigate to="/admin" replace />
-            ) : (
-              <SubscriptionGuard>
-                <StudentDashboard />
-              </SubscriptionGuard>
-            )
-          }
-        />
-      </Routes>
-    </Router>
+          <Route
+            path="/dashboard"
+            element={
+              isOwner ? (
+                <Navigate to="/admin" replace />
+              ) : (
+                <SubscriptionGuard>
+                  <StudentDashboard />
+                </SubscriptionGuard>
+              )
+            }
+          />
+        </Routes>
+      </Router>
+    </ErrorBoundary>
   );
 }
 

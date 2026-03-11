@@ -66,14 +66,25 @@ export function AdminDashboard() {
   }, [selectedModule]);
 
   const checkAdminStatus = async () => {
+    if (!user?.id) {
+      console.error('No user ID available');
+      navigate('/auth');
+      setLoading(false);
+      return;
+    }
+
     try {
       const { data, error } = await supabase
         .from('user_roles')
         .select('role')
-        .eq('user_id', user?.id)
+        .eq('user_id', user.id)
         .maybeSingle();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error checking admin status:', error);
+        navigate('/dashboard');
+        return;
+      }
 
       if (data && (data.role === 'admin' || data.role === 'owner')) {
         setIsAdmin(true);
