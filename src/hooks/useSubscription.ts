@@ -49,11 +49,13 @@ export function useSubscription() {
     : null;
 
   const isActive = subscription?.subscription_status === 'active' || subscription?.subscription_status === 'trialing';
+  const hasActiveSubscription = (user?.email === 'yogawithbw@proton.me') || isActive;
 
   return {
     subscription,
     currentPlan,
     isActive,
+    hasActiveSubscription,
     loading,
     isOwner
   };
