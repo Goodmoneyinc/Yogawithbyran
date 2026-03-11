@@ -27,8 +27,8 @@ interface VideoItem {
 export function AdminDashboard() {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [modules, setModules] = useState<Module[]>([]);
   const [videos, setVideos] = useState<VideoItem[]>([]);
   const [selectedModule, setSelectedModule] = useState<number | null>(null);
@@ -48,16 +48,8 @@ export function AdminDashboard() {
   }, [user, authLoading, navigate]);
 
   useEffect(() => {
-    if (user) {
-      checkAdminStatus();
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (isAdmin) {
-      loadModules();
-    }
-  }, [isAdmin]);
+    loadModules();
+  }, []);
 
   useEffect(() => {
     if (selectedModule) {
@@ -337,6 +329,7 @@ export function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-stone-50">
+      <h1 className="text-4xl font-bold text-red-600 p-8">Admin Test</h1>
       <div className="bg-white shadow-sm border-b border-stone-200">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">

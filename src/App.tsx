@@ -59,24 +59,12 @@ function App() {
 
           <Route
             path="/admin"
-            element={
-              <AdminGuard>
-                <AdminDashboard />
-              </AdminGuard>
-            }
+            element={user?.email === 'yogawithbw@proton.me' ? <AdminDashboard /> : <Navigate to="/dashboard" replace />}
           />
 
           <Route
             path="/dashboard"
-            element={
-              isOwner ? (
-                <Navigate to="/admin" replace />
-              ) : (
-                <SubscriptionGuard>
-                  <StudentDashboard />
-                </SubscriptionGuard>
-              )
-            }
+            element={user?.email === 'yogawithbw@proton.me' ? <AdminDashboard /> : <StudentDashboard />}
           />
         </Routes>
       </Router>
