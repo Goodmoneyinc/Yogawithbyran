@@ -1,15 +1,13 @@
 import React from 'react';
 import { Play, Star, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Hero() {
   const [showVideoModal, setShowVideoModal] = React.useState(false);
+  const navigate = useNavigate();
 
-  const handleStartJourney = async () => {
-    // Scroll to subscription plans section
-    const plansSection = document.getElementById('plans');
-    if (plansSection) {
-      plansSection.scrollIntoView({ behavior: 'smooth' });
-    }
+  const handleStartJourney = () => {
+    navigate('/membership');
   };
   
   return (

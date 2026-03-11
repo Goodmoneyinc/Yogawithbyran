@@ -12,6 +12,7 @@ import { StudentDashboard } from './pages/StudentDashboard';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { ResetPassword } from './pages/ResetPassword';
 import SuccessPage from './components/SuccessPage';
+import Membership from './pages/Membership';
 import { AdminGuard } from './components/auth/AdminGuard';
 import { SubscriptionGuard } from './components/auth/SubscriptionGuard';
 import { useAuth } from './hooks/useAuth';
@@ -50,6 +51,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/auth" element={user ? <Navigate to={isOwner ? "/admin" : "/dashboard"} replace /> : <Auth />} />
+        <Route path="/membership" element={<Membership />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/success" element={<SuccessPage />} />
 
