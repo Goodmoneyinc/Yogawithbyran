@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../hooks/useAuth';
-import { Upload, Video, Plus, Edit, Trash2, Save, X, Eye, EyeOff } from 'lucide-react';
+import { Upload, Video, Plus, CreditCard as Edit, Trash2, Save, X, Eye, EyeOff } from 'lucide-react';
 
 interface Module {
   id: number;
