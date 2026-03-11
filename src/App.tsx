@@ -33,7 +33,7 @@ function HomePage() {
 
 function App() {
   const { user, loading } = useAuth();
-  const isOwner = user?.email === 'yogawithbw@proton.me';
+  const isOwner = user?.email?.toLowerCase() === 'yogawithbw@proton.me';
 
   if (loading) {
     return (
