@@ -27,21 +27,29 @@ export function Auth() {
         if (error) throw error;
         setSuccessMessage('Password reset email sent! Check your inbox.');
       } else if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
         if (error) throw error;
-        const redirectTo = searchParams.get('redirect') || '/dashboard';
-        navigate(redirectTo);
+
+        if (data.user?.email === 'yogawithbw@proton.me') {
+          navigate('/admin');
+        } else {
+          navigate('/dashboard');
+        }
       } else {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
         });
         if (error) throw error;
-        const redirectTo = searchParams.get('redirect') || '/dashboard';
-        navigate(redirectTo);
+
+        if (data.user?.email === 'yogawithbw@proton.me') {
+          navigate('/admin');
+        } else {
+          navigate('/dashboard');
+        }
       }
     } catch (err: any) {
       setError(err.message);
