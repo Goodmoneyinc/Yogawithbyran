@@ -3,14 +3,28 @@ import { getUserSubscription, UserSubscription } from '../lib/supabase';
 import { getProductByPriceId } from '../stripe-config';
 import { useAuth } from './useAuth';
 
+const ADMIN_EMAIL = 'yogawithbw@proton.me';
+
 export function useSubscription() {
   const { user } = useAuth();
   const [subscription, setSubscription] = useState<UserSubscription | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const isOwner = user?.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+
   useEffect(() => {
     if (!user) {
       setSubscription(null);
+      setLoading(false);
+      return;
+    }
+
+    if (isOwner) {
+      setSubscription({
+        subscription_status: 'active',
+        price_id: null,
+        current_period_end: null
+      });
       setLoading(false);
       return;
     }
@@ -28,9 +42,9 @@ export function useSubscription() {
     };
 
     fetchSubscription();
-  }, [user]);
+  }, [user, isOwner]);
 
-  const currentPlan = subscription?.price_id 
+  const currentPlan = subscription?.price_id
     ? getProductByPriceId(subscription.price_id)
     : null;
 
@@ -40,6 +54,7 @@ export function useSubscription() {
     subscription,
     currentPlan,
     isActive,
-    loading
+    loading,
+    isOwner
   };
 }
