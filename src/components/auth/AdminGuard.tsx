@@ -6,9 +6,22 @@ const ADMIN_EMAIL = 'yogawithbw@proton.me';
 export function AdminGuard({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
 
-  if (loading) return <div>Verifying credentials...</div>;
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-gradient-to-br from-sage-50 to-stone-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Verifying credentials...</p>
+        </div>
+      </div>
+    );
+  }
 
-  if (!user || user.email !== ADMIN_EMAIL) {
+  if (!user) {
+    return <Navigate to="/auth" replace />;
+  }
+
+  if (user.email !== ADMIN_EMAIL) {
     console.error("Unauthorized access attempt blocked.");
     return <Navigate to="/dashboard" replace />;
   }

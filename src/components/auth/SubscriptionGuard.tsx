@@ -7,7 +7,14 @@ export function SubscriptionGuard({ children }: { children: React.ReactNode }) {
   const { hasActiveSubscription, loading: subLoading } = useSubscription();
 
   if (authLoading || subLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="h-screen flex items-center justify-center bg-gradient-to-br from-sage-50 to-stone-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
   }
 
   if (!user) {
